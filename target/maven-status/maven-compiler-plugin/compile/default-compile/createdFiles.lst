@@ -1,0 +1,10 @@
+com\mindfire\config\WebConfig.class
+com\mindfire\util\HibernateUtil.class
+com\mindfire\config\WebInitializer.class
+com\mindfire\service\UserService.class
+com\mindfire\dao\UserDaoImpl.class
+com\mindfire\dao\UserDao.class
+com\mindfire\controller\UserController.class
+com\mindfire\DTO\UserDTO.class
+com\mindfire\model\User.class
+com\mindfire\service\UserServiceImpl.class
