@@ -14,11 +14,13 @@ import java.util.List;
  */
 public interface ProductService {
 
-    public boolean saveProduct(Product product);
+    public int saveProduct(Product product);
 
-    public List<Product> getOrder(int artist_id);
+    public List<Product> getProductByArtist(int artist_id);
+    
+    public List<Product> getProduct();
 
-    public boolean updateProduct(Product product);
+    public int updateProduct(Product product);
 
     public int deleteProduct(int product_id);
 }

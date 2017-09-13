@@ -5,12 +5,20 @@
  */
 package com.mindfire.controller;
 
+import com.mindfire.DTO.ProductDTO;
+import com.mindfire.DTO.ProductListDTO;
 import com.mindfire.DTO.UserDTO;
+import com.mindfire.model.Product;
 import com.mindfire.model.User;
+import com.mindfire.service.ArtistService;
+import com.mindfire.service.OrderService;
+import com.mindfire.service.ProductService;
 import com.mindfire.service.UserService;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 import org.mindrot.jbcrypt.BCrypt;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,17 +41,28 @@ import org.springframework.web.servlet.ModelAndView;
  */
 @RestController
 public class UserController {
+
     @Autowired
     UserService userService;
+    @Autowired
+    ProductService productService;
+    @Autowired
+    ArtistService artistService;
+    @Autowired
+    OrderService orderService;
+
     @RequestMapping("/")
     public ModelAndView showform() {
         return new ModelAndView("index");
     }
-    
+/*----------------------------------------- Usser Controllers Started ------------------------------------------------------ */
+
     @RequestMapping(value = "/login")
-    public UserDTO getStatus(String email, String password) {
+    public UserDTO getStatus(String email, String password, HttpServletRequest request) {
         User us = userService.getUser(email);
         UserDTO result = new UserDTO();
+        HttpSession session = request.getSession();
+        session.setAttribute("user", us);
         result.setCode("200");
         result.setMessage("Valid User");
         result.setStatus("successful");
@@ -65,6 +84,99 @@ public class UserController {
         result.setUser(user);
         return result; 
     }
+/*----------------------------------------- User Controllers Ended ------------------------------------------------------ */   
+
+/*----------------------------------------- Product Controllers Started ------------------------------------------------------ */
+    // save product
+    @RequestMapping(value = "/product", method = RequestMethod.POST)
+    public ProductDTO saveProduct(@ModelAttribute("product") Product product) {
+        int status = productService.saveProduct(product);
+        ProductDTO result = new ProductDTO();
+        if (status == 1) {
+            result.setCode("200");
+            result.setStatus("successfull");
+            result.setProduct(product);
+            result.setMessage("");
+        } else {
+            result.setCode("400");
+            result.setStatus("unsuccessfull");
+            //result.setProduct(product);
+            result.setMessage("Query not run");
+        }
+        return result;
+    }
+
+    // Get product
+    @RequestMapping(value = "/product", method = RequestMethod.GET)
+    public ProductListDTO getProduct() {
+        List<Product> plist = (List<Product>) productService.getProduct();
+        ProductListDTO result = new ProductListDTO();
+        result.setCode("200");
+        result.setStatus("successfull");
+        result.setPlist(plist);
+        result.setMessage("product reciecved");
+        return result;
+    }
+    
+    //Get Product By Artist
+    @RequestMapping(value = "/productByArtist", method = RequestMethod.GET)
+    public ProductListDTO getProductByArtist(String a_id) {
+        int artist_id = Integer.parseInt(a_id);        
+        List<Product> plist = (List<Product>) productService.getProductByArtist(artist_id);
+        ProductListDTO result = new ProductListDTO();
+        result.setCode("200");
+        result.setStatus("successfull");
+        result.setPlist(plist);
+        result.setMessage("product reciecved");
+        return result;
+    }
+    
+    // delete product
+    @RequestMapping(value = "/product", method = RequestMethod.DELETE)
+    public ProductDTO deleteProduct(String p_id) {
+        int product_id = Integer.parseInt(p_id);
+        int status = productService.deleteProduct(product_id);
+        ProductDTO result = new ProductDTO();
+        if (status == 1) {
+            result.setCode("200");
+            result.setStatus("successfull");
+            //result.setProduct(product);
+            result.setMessage("");
+        } else {
+            result.setCode("400");
+            result.setStatus("unsuccessfull");
+            //result.setProduct(product);
+            result.setMessage("Query not run");
+        }
+        return result;
+
+    }
+    
+    @RequestMapping(value = "/product", method = RequestMethod.PUT)
+    public ProductDTO updateProduct(Product product) {
+        int status = productService.updateProduct(product);
+        ProductDTO result = new ProductDTO();
+        if (status == 1) {
+            result.setCode("200");
+            result.setStatus("successfull");
+            //result.setProduct(product);
+            result.setMessage("");
+        } else {
+            result.setCode("400");
+            result.setStatus("unsuccessfull");
+            //result.setProduct(product);
+            result.setMessage("Query not run");
+        }
+        return result;
+    }
+
+/*----------------------------------------- Product Controllers Ended ------------------------------------------------------ */   
+    
+/*----------------------------------------- Artist Controllers Started ------------------------------------------------------ */
+   
+/*----------------------------------------- Artist Controllers Ended ------------------------------------------------------ */   
+
+    
 //    @RequestMapping(value = "/edit", method = RequestMethod.GET)
 //    public RestWrapperDTO getEmployeeInJSON() {
 //        RestWrapperDTO wrapperDTO = new RestWrapperDTO();

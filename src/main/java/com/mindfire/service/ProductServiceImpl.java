@@ -19,17 +19,23 @@ public class ProductServiceImpl implements ProductService{
     ProductDao productDao;
 
     @Override
-    public boolean saveProduct(Product product) {
+    public int saveProduct(Product product) {
        return productDao.saveProduct(product);
     }
 
     @Override
-    public List<Product> getOrder(int artist_id) {
-       return productDao.getOrder(artist_id);
+    public List<Product> getProductByArtist(int artist_id) {
+       return productDao.getProductByArtist(artist_id);
     }
+     
+    @Override
+    public List<Product> getProduct() {
+        return productDao.getProduct();
+    }
+    
 
     @Override
-    public boolean updateProduct(Product product) {
+    public int updateProduct(Product product) {
         return productDao.updateProduct(product);
     }
 
@@ -37,5 +43,6 @@ public class ProductServiceImpl implements ProductService{
     public int deleteProduct(int product_id) {
         return productDao.deleteProduct(product_id);
     }
-    
+
+  
 }

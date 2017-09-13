@@ -18,20 +18,20 @@ import org.springframework.stereotype.Repository;
  * @author anants
  */
 @Repository
-public class ProductDaoImpl implements ProductDao{
+public class ProductDaoImpl implements ProductDao {
 
     @Override
-    public boolean saveProduct(Product product) {
+    public int saveProduct(Product product) {
         Session session = HibernateUtil.getSessionFactory().openSession();
         session.beginTransaction();
         session.save(product);
-        session.getTransaction().commit();  
+        session.getTransaction().commit();
         session.close();
-        return true;
+        return 1;
     }
 
     @Override
-    public List<Product> getOrder(int artist_id) {
+    public List<Product> getProductByArtist(int artist_id) {
         Session session = HibernateUtil.getSessionFactory().openSession();
         session.beginTransaction();
         String hql = "from Product product where artist_id =:artist_id";
@@ -39,15 +39,32 @@ public class ProductDaoImpl implements ProductDao{
         query.setParameter("artist_id", artist_id);
         List<Product> pr = (List<Product>) query.list();
         session.getTransaction().commit();
-        session.close();        
+        session.close();
         return pr;
     }
 
     @Override
-    public boolean updateProduct(Product product) {
+    public List<Product> getProduct() {
         Session session = HibernateUtil.getSessionFactory().openSession();
         session.beginTransaction();
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        String hql = "from Product product";
+        Query query = session.createQuery(hql);
+        List<Product> pr = (List<Product>) query.list();
+        session.getTransaction().commit();
+        session.close();
+        return pr;
+    }
+
+    @Override
+    public int updateProduct(Product product) {
+        Session session = HibernateUtil.getSessionFactory().openSession();
+        session.beginTransaction();
+        String hql ="update Product product set title = :title, description =: description, category =: category, price =: price";
+        Query query = session.createQuery(hql);
+        int result = query.executeUpdate();
+        session.getTransaction().commit();
+        session.close();
+        return result;
     }
 
     @Override
@@ -62,5 +79,5 @@ public class ProductDaoImpl implements ProductDao{
         session.close();
         return result;
     }
-    
+
 }
