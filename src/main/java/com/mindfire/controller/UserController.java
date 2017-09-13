@@ -5,9 +5,12 @@
  */
 package com.mindfire.controller;
 
+import com.mindfire.DTO.ArtistDTO;
+import com.mindfire.DTO.ArtistListDTO;
 import com.mindfire.DTO.ProductDTO;
 import com.mindfire.DTO.ProductListDTO;
 import com.mindfire.DTO.UserDTO;
+import com.mindfire.model.Artist;
 import com.mindfire.model.Product;
 import com.mindfire.model.User;
 import com.mindfire.service.ArtistService;
@@ -55,7 +58,8 @@ public class UserController {
     public ModelAndView showform() {
         return new ModelAndView("index");
     }
-/*----------------------------------------- Usser Controllers Started ------------------------------------------------------ */
+
+    /*----------------------------------------- Usser Controllers Started ------------------------------------------------------ */
 
     @RequestMapping(value = "/login")
     public UserDTO getStatus(String email, String password, HttpServletRequest request) {
@@ -69,12 +73,12 @@ public class UserController {
         result.setUser(us);
         return result;
     }
-    
+
     @RequestMapping(value = "/signup", method = RequestMethod.POST)
     public UserDTO save(@ModelAttribute("user") User user) {
         //encrypting password using bcrypt
         String pass = BCrypt.hashpw(user.getPassword(), BCrypt.gensalt());
-        System.out.println("pass   "+pass);
+        System.out.println("pass   " + pass);
         user.setPassword(pass);
         userService.saveUser(user);
         UserDTO result = new UserDTO();
@@ -82,11 +86,12 @@ public class UserController {
         result.setMessage("Valid User");
         result.setStatus("successful");
         result.setUser(user);
-        return result; 
+        return result;
     }
-/*----------------------------------------- User Controllers Ended ------------------------------------------------------ */   
 
-/*----------------------------------------- Product Controllers Started ------------------------------------------------------ */
+    /*----------------------------------------- User Controllers Ended ------------------------------------------------------ */
+
+ /*----------------------------------------- Product Controllers Started ------------------------------------------------------ */
     // save product
     @RequestMapping(value = "/product", method = RequestMethod.POST)
     public ProductDTO saveProduct(@ModelAttribute("product") Product product) {
@@ -117,11 +122,11 @@ public class UserController {
         result.setMessage("product reciecved");
         return result;
     }
-    
+
     //Get Product By Artist
     @RequestMapping(value = "/productByArtist", method = RequestMethod.GET)
     public ProductListDTO getProductByArtist(String a_id) {
-        int artist_id = Integer.parseInt(a_id);        
+        int artist_id = Integer.parseInt(a_id);
         List<Product> plist = (List<Product>) productService.getProductByArtist(artist_id);
         ProductListDTO result = new ProductListDTO();
         result.setCode("200");
@@ -130,7 +135,7 @@ public class UserController {
         result.setMessage("product reciecved");
         return result;
     }
-    
+
     // delete product
     @RequestMapping(value = "/product", method = RequestMethod.DELETE)
     public ProductDTO deleteProduct(String p_id) {
@@ -151,7 +156,7 @@ public class UserController {
         return result;
 
     }
-    
+
     @RequestMapping(value = "/product", method = RequestMethod.PUT)
     public ProductDTO updateProduct(Product product) {
         int status = productService.updateProduct(product);
@@ -170,13 +175,59 @@ public class UserController {
         return result;
     }
 
-/*----------------------------------------- Product Controllers Ended ------------------------------------------------------ */   
-    
-/*----------------------------------------- Artist Controllers Started ------------------------------------------------------ */
-   
-/*----------------------------------------- Artist Controllers Ended ------------------------------------------------------ */   
+    /*----------------------------------------- Product Controllers Ended ------------------------------------------------------ */
+ /*----------------------------------------- Artist Controllers Started ------------------------------------------------------ */
+    // Add Artist
+    @RequestMapping(value = "/artist", method = RequestMethod.POST)
+    public ArtistDTO saveProduct(@ModelAttribute("artist") Artist artist) {
+        int status = artistService.saveArtist(artist);
+        ArtistDTO result = new ArtistDTO();
+        if (status == 1) {
+            result.setCode("200");
+            result.setStatus("successfull");
+            result.setArtist(artist);
+            result.setMessage("Artist added Successfully");
+        } else {
+            result.setCode("400");
+            result.setStatus("unsuccessfull");
+            //result.setProduct(product);
+            result.setMessage("Query not run");
+        }
+        return result;
+    }
 
-    
+    //Update Artist
+    @RequestMapping(value = "/artist", method = RequestMethod.PUT)
+    public ArtistDTO updateProduct(@ModelAttribute("artist") Artist artist) {
+        int status = artistService.updateArtist(artist);
+        ArtistDTO result = new ArtistDTO();
+        if (status == 1) {
+            result.setCode("200");
+            result.setStatus("successfull");
+            //result.setProduct(product);
+            result.setMessage("");
+        } else {
+            result.setCode("400");
+            result.setStatus("unsuccessfull");
+            //result.setProduct(product);
+            result.setMessage("Query not run");
+        }
+        return result;
+    }
+
+    //Get Artist
+    @RequestMapping(value = "/artist", method = RequestMethod.GET)
+    public ArtistListDTO updateProduct() {
+        List<Artist> alist = artistService.getArtist();
+        ArtistListDTO result = new ArtistListDTO();
+        result.setCode("200");
+        result.setStatus("successfull");
+        result.setAlist(alist);
+        result.setMessage(" all artists");
+        return result;
+    }
+
+    /*----------------------------------------- Artist Controllers Ended ------------------------------------------------------ */
 //    @RequestMapping(value = "/edit", method = RequestMethod.GET)
 //    public RestWrapperDTO getEmployeeInJSON() {
 //        RestWrapperDTO wrapperDTO = new RestWrapperDTO();
@@ -192,5 +243,4 @@ public class UserController {
 //        return result;
 //    }
 //    
-
 }

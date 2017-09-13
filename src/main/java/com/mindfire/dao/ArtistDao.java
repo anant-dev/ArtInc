@@ -13,7 +13,7 @@ import java.util.List;
  * @author anants
  */
 public interface ArtistDao {
-    public boolean saveArtist(Artist artist);
+    public int saveArtist(Artist artist);
     public List<Artist> getArtist();
-    public boolean updateArtist(Artist artist);
+    public int updateArtist(Artist artist);
 }

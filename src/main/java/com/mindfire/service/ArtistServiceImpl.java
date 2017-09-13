@@ -19,7 +19,7 @@ public class ArtistServiceImpl implements ArtistService {
     ArtistDao artistDao;
 
     @Override
-    public boolean saveArtist(Artist artist) {
+    public int saveArtist(Artist artist) {
         return artistDao.saveArtist(artist);
     }
 
@@ -29,7 +29,7 @@ public class ArtistServiceImpl implements ArtistService {
     }
 
     @Override
-    public boolean updateArtist(Artist artist) {
+    public int updateArtist(Artist artist) {
         return artistDao.updateArtist(artist);
     }
     

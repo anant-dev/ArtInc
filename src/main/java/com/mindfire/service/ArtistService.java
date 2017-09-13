@@ -14,9 +14,9 @@ import java.util.List;
  */
 public interface ArtistService {
 
-    public boolean saveArtist(Artist artist);
+    public int saveArtist(Artist artist);
 
     public List<Artist> getArtist();
 
-    public boolean updateArtist(Artist artist);
+    public int updateArtist(Artist artist);
 }

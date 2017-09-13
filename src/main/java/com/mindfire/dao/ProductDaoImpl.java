@@ -61,6 +61,10 @@ public class ProductDaoImpl implements ProductDao {
         session.beginTransaction();
         String hql ="update Product product set title = :title, description =: description, category =: category, price =: price";
         Query query = session.createQuery(hql);
+        query.setParameter("title", product.getTitle());
+        query.setParameter("description", product.getDescription());
+        query.setParameter("category", product.getCategory());
+        query.setParameter("price", product.getPrice());
         int result = query.executeUpdate();
         session.getTransaction().commit();
         session.close();

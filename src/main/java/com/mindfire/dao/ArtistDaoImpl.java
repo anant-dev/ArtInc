@@ -6,7 +6,6 @@
 package com.mindfire.dao;
 
 import com.mindfire.model.Artist;
-import com.mindfire.model.Product;
 import com.mindfire.util.HibernateUtil;
 import java.util.List;
 import org.hibernate.Query;
@@ -21,13 +20,13 @@ import org.springframework.stereotype.Repository;
 public class ArtistDaoImpl implements ArtistDao{
 
     @Override
-    public boolean saveArtist(Artist artist) {
+    public int saveArtist(Artist artist) {
         Session session = HibernateUtil.getSessionFactory().openSession();
         session.beginTransaction();
         session.save(artist);
         session.getTransaction().commit();
         session.close();
-        return true;
+        return 1;
     }
 
     @Override
@@ -44,8 +43,17 @@ public class ArtistDaoImpl implements ArtistDao{
     }
 
     @Override
-    public boolean updateArtist(Artist artist) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public int updateArtist(Artist artist) {
+        Session session = HibernateUtil.getSessionFactory().openSession();
+        session.beginTransaction();
+        String hql ="update Artist artist set description =: description, place =: place";
+        Query query = session.createQuery(hql);
+        query.setParameter("description", artist.getDescription());
+        query.setParameter("place", artist.getPlace());
+        int result = query.executeUpdate();
+        session.getTransaction().commit();
+        session.close();
+        return result;
     }
     
 }
