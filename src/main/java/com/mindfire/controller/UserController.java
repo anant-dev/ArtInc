@@ -7,10 +7,13 @@ package com.mindfire.controller;
 
 import com.mindfire.DTO.ArtistDTO;
 import com.mindfire.DTO.ArtistListDTO;
+import com.mindfire.DTO.OrderDTO;
+import com.mindfire.DTO.OrderListDTO;
 import com.mindfire.DTO.ProductDTO;
 import com.mindfire.DTO.ProductListDTO;
 import com.mindfire.DTO.UserDTO;
 import com.mindfire.model.Artist;
+import com.mindfire.model.Order;
 import com.mindfire.model.Product;
 import com.mindfire.model.User;
 import com.mindfire.service.ArtistService;
@@ -176,10 +179,11 @@ public class UserController {
     }
 
     /*----------------------------------------- Product Controllers Ended ------------------------------------------------------ */
+    
  /*----------------------------------------- Artist Controllers Started ------------------------------------------------------ */
     // Add Artist
     @RequestMapping(value = "/artist", method = RequestMethod.POST)
-    public ArtistDTO saveProduct(@ModelAttribute("artist") Artist artist) {
+    public ArtistDTO saveArtist(@ModelAttribute("artist") Artist artist) {
         int status = artistService.saveArtist(artist);
         ArtistDTO result = new ArtistDTO();
         if (status == 1) {
@@ -198,7 +202,7 @@ public class UserController {
 
     //Update Artist
     @RequestMapping(value = "/artist", method = RequestMethod.PUT)
-    public ArtistDTO updateProduct(@ModelAttribute("artist") Artist artist) {
+    public ArtistDTO updateArtist(@ModelAttribute("artist") Artist artist) {
         int status = artistService.updateArtist(artist);
         ArtistDTO result = new ArtistDTO();
         if (status == 1) {
@@ -217,7 +221,7 @@ public class UserController {
 
     //Get Artist
     @RequestMapping(value = "/artist", method = RequestMethod.GET)
-    public ArtistListDTO updateProduct() {
+    public ArtistListDTO getArtist() {
         List<Artist> alist = artistService.getArtist();
         ArtistListDTO result = new ArtistListDTO();
         result.setCode("200");
@@ -226,8 +230,60 @@ public class UserController {
         result.setMessage(" all artists");
         return result;
     }
+    
+    
+    
+    
 
     /*----------------------------------------- Artist Controllers Ended ------------------------------------------------------ */
+    
+    
+    
+    /*----------------------------------------- Order Controllers Started ------------------------------------------------------ */
+    
+    
+    // Add Order
+    @RequestMapping(value = "/order", method = RequestMethod.POST)
+    public OrderDTO saveOrder(@ModelAttribute("order") Order order) {
+        int status = orderService.saveOrder(order);
+        OrderDTO result = new OrderDTO();
+        if (status == 1) {
+            result.setCode("200");
+            result.setStatus("successfull");
+            //result.setArtist(artist);
+            result.setMessage("Order added Successfully");
+        } else {
+            result.setCode("400");
+            result.setStatus("unsuccessfull");
+            //result.setProduct(product);
+            result.setMessage("Query not run");
+        }
+        return result;
+    }
+    
+    //Get Order
+    @RequestMapping(value = "/order", method = RequestMethod.GET)
+    public OrderListDTO getOrder(String u_id) {
+        int user_id= Integer.parseInt(u_id);
+        List<Order> olist = orderService.getOrder(user_id);
+        OrderListDTO result = new OrderListDTO();
+        result.setCode("200");
+        result.setStatus("successfull");
+        result.setOlist(olist);
+        result.setMessage(" all artists");
+        return result;
+    }
+    
+    
+    
+    
+     /*----------------------------------------- Order Controllers Ended ------------------------------------------------------ */
+    
+    
+    
+    
+    
+    
 //    @RequestMapping(value = "/edit", method = RequestMethod.GET)
 //    public RestWrapperDTO getEmployeeInJSON() {
 //        RestWrapperDTO wrapperDTO = new RestWrapperDTO();

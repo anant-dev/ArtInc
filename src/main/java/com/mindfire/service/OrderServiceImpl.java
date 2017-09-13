@@ -19,7 +19,7 @@ public class OrderServiceImpl implements OrderService{
     OrderDao orderDao;
 
     @Override
-    public boolean saveOrder(Order order) {
+    public int saveOrder(Order order) {
         return orderDao.saveOrder(order);
     }
 

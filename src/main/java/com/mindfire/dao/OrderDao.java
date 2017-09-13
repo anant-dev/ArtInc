@@ -13,6 +13,6 @@ import java.util.List;
  * @author anants
  */
 public interface OrderDao {
-    public boolean saveOrder(Order order);
+    public int saveOrder(Order order);
     public List<Order> getOrder(int user_id);
 }

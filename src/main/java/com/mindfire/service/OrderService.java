@@ -14,7 +14,7 @@ import java.util.List;
  */
 public interface OrderService {
 
-    public boolean saveOrder(Order order);
+    public int saveOrder(Order order);
 
     public List<Order> getOrder(int user_id);
 }

@@ -21,13 +21,13 @@ import org.springframework.stereotype.Repository;
 public class OrderDaoImpl implements OrderDao{
 
     @Override
-    public boolean saveOrder(Order order) {
+    public int saveOrder(Order order) {
         Session session = HibernateUtil.getSessionFactory().openSession();
         session.beginTransaction();
         session.save(order);
         session.getTransaction().commit();  
         session.close();
-        return true;
+        return 1;
     }
 
     @Override
