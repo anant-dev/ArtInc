@@ -12,6 +12,6 @@ import com.mindfire.model.User;
  * @author anants
  */
 public interface UserDao {
-    public void saveUser(User user);
+    public int saveUser(User user);
     public User getUser(String email);
 }

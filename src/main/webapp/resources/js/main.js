@@ -6,7 +6,7 @@
 
 
 $(document).ready(function () {
-
+    showProductsAjax();
     $('.modal').modal();
     $(window).scroll(function () {
         if ($(window).scrollTop() >= 500) {
@@ -125,7 +125,7 @@ function display() {
     var acc = document.getElementById('myaccount');
     acc.style.display = "block";
     var li = document.createElement('li');
-    li.innerHTML = '<a class="modal-trigger" href="#">Logout</a>';
+    li.innerHTML = '<a class="modal-trigger" href="logout">Logout</a>';
     ul.appendChild(li);
     Materialize.toast('Login Succssful !', 4000)
 
@@ -138,3 +138,64 @@ $('#artistCheck').change(function () {
         alert("You have elected to turn off checkout history."); //not checked
     }
 });
+
+//$("#logout").click(function (event) {
+//    event.preventDefault();
+//    $.ajax({
+//        type: "GET",
+//        url: "logout",
+//        data: {
+//        },
+//        success: function (data) {
+//            if (data.status === "successful") {
+//                Materialize.toast(data.message, 4000)
+//            }
+//        },
+//        error: function (e) {
+//            console.log("ERROR: ", e);
+//            display(e);
+//        },
+//        done: function (e) {
+//            console.log("DONE");
+//            enableSearchButton(true);
+//        }
+//    });
+//});
+function showProductsAjax(){
+     $.ajax({
+        type: "GET",
+        url: "product",
+        data: {
+        },
+        success: function (data) {
+            if (data.status === "successfull") {
+                showProduct(data);
+            }
+        },
+        error: function (e) {
+            alert("ERROR: ", e);
+        },
+        done: function (e) {
+            alert("DONE",e);
+        }
+    }); 
+}
+function showProduct(data) {
+    $.each(data.plist, function (idx, obj) {
+        $('#products').append('<div class="col s3">\n\
+                                <div class="card" id="'+obj.product_id+'">\n\
+                                    <div class="card-image">\n\
+                                        <img src="'+obj.location+'" style="height:200px">\n\
+                                            <a class="btn-floating btn-large halfway-fab waves-effect waves-light indigo darken-4">\n\
+                                            <i class="fa fa-shopping-cart" aria-hidden="true"></i></a>\n\
+                                    </div>\n\
+                                    <div class="card-content">\n\
+                                        <span class="card-title">'+obj.title+'</span>\n\
+                                        <p class="counter" style="font-size: 15px;"> By <a href="#">'+obj.artist_name+'</a></p>\n\
+                                        <p class="counter" style="font-size: 25px;">'+obj.price+'<span class="unit" style="font-size: 12px;"> RS</span>\n\
+                                        <p><a href="#">More Info</a></p>\n\
+                                    </div>\n\
+                                </div>\n\
+                            </div>');
+    });
+}

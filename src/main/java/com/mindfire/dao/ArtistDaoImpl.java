@@ -33,7 +33,7 @@ public class ArtistDaoImpl implements ArtistDao{
     public List<Artist> getArtist() {
         Session session = HibernateUtil.getSessionFactory().openSession();
         session.beginTransaction();
-        String hql = "from Artist artist where artist_id =:artist_id";
+        String hql = "from Artist artist";
         Query query = session.createQuery(hql);
         //query.setParameter("artist_id", artist_id);
         List<Artist> ar = (List<Artist>) query.list();

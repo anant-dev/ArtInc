@@ -9,11 +9,13 @@ import com.mindfire.dao.ArtistDao;
 import com.mindfire.model.Artist;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 /**
  *
  * @author anants
  */
+@Service
 public class ArtistServiceImpl implements ArtistService {
     @Autowired
     ArtistDao artistDao;

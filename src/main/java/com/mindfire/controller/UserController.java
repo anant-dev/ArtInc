@@ -50,10 +50,13 @@ public class UserController {
 
     @Autowired
     UserService userService;
+    
     @Autowired
     ProductService productService;
+    
     @Autowired
     ArtistService artistService;
+    
     @Autowired
     OrderService orderService;
 
@@ -61,34 +64,63 @@ public class UserController {
     public ModelAndView showform() {
         return new ModelAndView("index");
     }
-
+    @RequestMapping(value = "/logout")
+    public ModelAndView logout(HttpServletRequest request) {
+        HttpSession session = request.getSession(false);
+        session.invalidate();
+//        UserDTO result = new UserDTO();
+//        result.setCode("200");
+//        result.setMessage("Successfully Loged Out");
+//        result.setStatus("successful");
+         return new ModelAndView("redirect:/");
+    }
     /*----------------------------------------- Usser Controllers Started ------------------------------------------------------ */
 
     @RequestMapping(value = "/login")
     public UserDTO getStatus(String email, String password, HttpServletRequest request) {
         User us = userService.getUser(email);
         UserDTO result = new UserDTO();
-        HttpSession session = request.getSession();
-        session.setAttribute("user", us);
-        result.setCode("200");
-        result.setMessage("Valid User");
-        result.setStatus("successful");
-        result.setUser(us);
+        if (us != null) {
+            if (BCrypt.checkpw(password, us.getPassword())) {
+                HttpSession session = request.getSession();
+                session.setAttribute("user", us);
+                //setting data into DTO file
+                result.setCode("200");
+                result.setMessage("Valid User");
+                result.setStatus("successful");
+                result.setUser(us);
+            } else {
+                result.setCode("404");
+                result.setStatus("unsuccessfull");
+                result.setMessage("Invalid Credentials");
+            }
+        } else {
+            result.setCode("400");
+            result.setStatus("unsuccessfull");
+            result.setMessage("User Does Not Exist Try Sigining Up");
+        }
         return result;
     }
 
     @RequestMapping(value = "/signup", method = RequestMethod.POST)
-    public UserDTO save(@ModelAttribute("user") User user) {
+    public UserDTO save(@ModelAttribute("user") User user, HttpServletRequest request) {
         //encrypting password using bcrypt
         String pass = BCrypt.hashpw(user.getPassword(), BCrypt.gensalt());
-        System.out.println("pass   " + pass);
         user.setPassword(pass);
-        userService.saveUser(user);
+        int status = userService.saveUser(user);
         UserDTO result = new UserDTO();
-        result.setCode("200");
-        result.setMessage("Valid User");
-        result.setStatus("successful");
-        result.setUser(user);
+        if (status >= 1) {
+            HttpSession session = request.getSession();
+            session.setAttribute("user", user);
+            result.setCode("200");
+            result.setMessage("Valid User");
+            result.setStatus("successful");
+            result.setUser(user);
+        } else {
+            result.setCode("400");
+            result.setStatus("unsuccessfull");
+            result.setMessage("There was a problem Try Again Later");
+        }
         return result;
     }
 
@@ -127,7 +159,7 @@ public class UserController {
     }
 
     //Get Product By Artist
-    @RequestMapping(value = "/productByArtist", method = RequestMethod.GET)
+    @RequestMapping(value = "/productByArtist", method = RequestMethod.POST)
     public ProductListDTO getProductByArtist(String a_id) {
         int artist_id = Integer.parseInt(a_id);
         List<Product> plist = (List<Product>) productService.getProductByArtist(artist_id);

@@ -32,6 +32,7 @@ public class Product implements Serializable{
     private String p_size;
     private String price;
     private String numb_sold;
+     private String artist_name;
 
     public int getProduct_id() {
         return product_id;
@@ -103,6 +104,14 @@ public class Product implements Serializable{
 
     public void setNumb_sold(String numb_sold) {
         this.numb_sold = numb_sold;
+    }
+
+    public String getArtist_name() {
+        return artist_name;
+    }
+
+    public void setArtist_name(String artist_name) {
+        this.artist_name = artist_name;
     }
     
 }

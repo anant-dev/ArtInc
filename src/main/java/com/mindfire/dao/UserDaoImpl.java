@@ -19,12 +19,13 @@ import org.springframework.stereotype.Repository;
 public class UserDaoImpl implements UserDao {
     
     @Override
-    public void saveUser(User user) {
+    public int saveUser(User user) {
         Session session = HibernateUtil.getSessionFactory().openSession();
         session.beginTransaction();
-        session.save(user);
+        int status = (int) session.save(user);
         session.getTransaction().commit();  
         session.close();
+        return status;
     }
 
     @Override

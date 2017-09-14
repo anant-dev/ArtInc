@@ -9,11 +9,13 @@ import com.mindfire.dao.ProductDao;
 import com.mindfire.model.Product;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 /**
  *
  * @author anants
  */
+@Service
 public class ProductServiceImpl implements ProductService{
     @Autowired
     ProductDao productDao;
