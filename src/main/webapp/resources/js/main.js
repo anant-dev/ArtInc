@@ -6,7 +6,6 @@
 
 
 $(document).ready(function () {
-    showProductsAjax();
     $('.modal').modal();
     $(window).scroll(function () {
         if ($(window).scrollTop() >= 500) {
@@ -24,6 +23,8 @@ setInterval(function () {
 //        $(document).ready(function () {
 //            $('.scrollspy').scrollSpy();
 //        });
+
+//for typing string in loop using type.js
 $(function () {
     $("#tag").typed({
         strings: [" Where Art Meets People "],
@@ -35,6 +36,7 @@ $(function () {
     });
 });
 
+//for login button click
 $("#login").click(function (event) {
     // Disble the search button
     $("#login").prop("disabled", false);
@@ -42,7 +44,7 @@ $("#login").click(function (event) {
     event.preventDefault();
     loginAjax();
 });
-
+// for signup button click
 $("#signup").click(function (event) {
     // Disble the search button
     $("#signup").prop("disabled", true);
@@ -115,7 +117,9 @@ function signUpAjax() {
 
 
 }
-function display() {
+
+// on signup and login successfull
+function display(data) {
     //document.getElementById('#navList').removeChild(document.getElementById(input.parentNode ));
     var ul = document.getElementById('nav-mobile');
     var li1 = document.getElementById('navSignup');
@@ -124,11 +128,13 @@ function display() {
     ul.removeChild(li2);
     var acc = document.getElementById('myaccount');
     acc.style.display = "block";
+    if(data.user.user_type === 1){
+        document.getElementById('myProfile').style.display="block";
+    }
     var li = document.createElement('li');
     li.innerHTML = '<a class="modal-trigger" href="logout">Logout</a>';
     ul.appendChild(li);
-    Materialize.toast('Login Succssful !', 4000)
-
+    Materialize.toast('Login Succssful !', 4000);
 }
 
 $('#artistCheck').change(function () {
@@ -161,6 +167,7 @@ $('#artistCheck').change(function () {
 //        }
 //    });
 //});
+
 function showProductsAjax(){
      $.ajax({
         type: "GET",
@@ -194,6 +201,79 @@ function showProduct(data) {
                                         <p class="counter" style="font-size: 15px;"> By <a href="#">'+obj.artist_name+'</a></p>\n\
                                         <p class="counter" style="font-size: 25px;">'+obj.price+'<span class="unit" style="font-size: 12px;"> RS</span>\n\
                                         <p><a href="#">More Info</a></p>\n\
+                                    </div>\n\
+                                </div>\n\
+                            </div>');
+    });
+}
+
+function showArtistAjax(){
+    $.ajax({
+        type: "GET",
+        url: "artist",
+        data: {
+        },
+        success: function (data) {
+            if (data.status === "successfull") {
+                showArtist(data);
+            }
+        },
+        error: function (e) {
+            alert("ERROR: ", e);
+        },
+        done: function (e) {
+            alert("DONE",e);
+        }
+    }); 
+}
+
+function showArtist(data){
+    $.each(data.alist, function (idx, obj) {
+        $('#artists').append('<div class="col s3">\n\
+                                <div class="card" id="'+obj.artist_id+'">\n\
+                                    <div class="card-image">\n\
+                                        <img src="'+obj.profile_pic+'" style="height:200px">\n\
+                                    </div>\n\
+                                    <div class="card-content">\n\
+                                        <span class="card-title">'+obj.artist_name+'</span>\n\
+                                        <p class="counter" style="font-size: 15px;"> From : '+obj.place+'</p>\n\
+                                        <p><a href="artist/'+obj.artist_id+'">Show Profile</a></p>\n\
+                                    </div>\n\
+                                </div>\n\
+                            </div>');
+    });
+}
+
+function showCategoryAjax(){
+    $.ajax({
+        type: "GET",
+        url: "category",
+        data: {
+        },
+        success: function (data) {
+            if (data.status === "successfull") {
+               showCategory(data);
+            }
+        },
+        error: function (e) {
+            alert("ERROR: ", e);
+        },
+        done: function (e) {
+            alert("DONE",e);
+        }
+    }); 
+}
+
+function showCategory(data){
+    $.each(data.category, function (idx, obj) {
+        $('#category').append('<div class="col s3">\n\
+                                <div class="card" id="'+obj.c_id+'">\n\
+                                    <div class="card-image">\n\
+                                        <img src="'+obj.image+'" style="height:200px">\n\
+                                    </div>\n\
+                                    <div class="card-content">\n\
+                                        <span class="card-title">'+obj.name+'</span>\n\
+                                        <p><a href="category/'+obj.c_id+'">Show Profile</a></p>\n\
                                     </div>\n\
                                 </div>\n\
                             </div>');

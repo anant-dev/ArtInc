@@ -28,6 +28,7 @@ public class Artist implements Serializable{
     private String description;
     private String place;
     private String numb_img;
+    private String artist_name;
    
     public int getArtist_id() {
         return artist_id;
@@ -67,6 +68,14 @@ public class Artist implements Serializable{
 
     public void setNumb_img(String numb_img) {
         this.numb_img = numb_img;
+    }
+
+    public String getArtist_name() {
+        return artist_name;
+    }
+
+    public void setArtist_name(String artist_name) {
+        this.artist_name = artist_name;
     }
 
     

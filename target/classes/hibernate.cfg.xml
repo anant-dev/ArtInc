@@ -55,6 +55,7 @@ Contributor(s):
         <mapping class="com.mindfire.model.Artist"/>
         <mapping class="com.mindfire.model.Order"/>
         <mapping class="com.mindfire.model.Product"/>
+        <mapping class="com.mindfire.model.Category"/>
         
     
     

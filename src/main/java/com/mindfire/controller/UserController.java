@@ -7,16 +7,19 @@ package com.mindfire.controller;
 
 import com.mindfire.DTO.ArtistDTO;
 import com.mindfire.DTO.ArtistListDTO;
+import com.mindfire.DTO.CategoryDTO;
 import com.mindfire.DTO.OrderDTO;
 import com.mindfire.DTO.OrderListDTO;
 import com.mindfire.DTO.ProductDTO;
 import com.mindfire.DTO.ProductListDTO;
 import com.mindfire.DTO.UserDTO;
 import com.mindfire.model.Artist;
+import com.mindfire.model.Category;
 import com.mindfire.model.Order;
 import com.mindfire.model.Product;
 import com.mindfire.model.User;
 import com.mindfire.service.ArtistService;
+import com.mindfire.service.CategoryService;
 import com.mindfire.service.OrderService;
 import com.mindfire.service.ProductService;
 import com.mindfire.service.UserService;
@@ -59,6 +62,9 @@ public class UserController {
     
     @Autowired
     OrderService orderService;
+    
+    @Autowired
+    CategoryService categoryService;
 
     @RequestMapping("/")
     public ModelAndView showform() {
@@ -73,6 +79,33 @@ public class UserController {
 //        result.setMessage("Successfully Loged Out");
 //        result.setStatus("successful");
          return new ModelAndView("redirect:/");
+    }
+    // Show By controller
+    @RequestMapping("/byArtist")
+    public ModelAndView showByArtist() {
+        return new ModelAndView("showByArtist");
+    }
+    @RequestMapping("/bySize")
+    public ModelAndView showBySize() {
+        return new ModelAndView("showBySize");
+    }
+    @RequestMapping("/byType")
+    public ModelAndView showByType() {
+        return new ModelAndView("showByType");
+    }
+    
+    //My Account Controller
+    @RequestMapping("/order")
+    public ModelAndView showOrder() {
+        return new ModelAndView("order");
+    }
+    @RequestMapping("/cart")
+    public ModelAndView showCart() {
+        return new ModelAndView("cart");
+    }
+    @RequestMapping("/myProfile")
+    public ModelAndView showProfile() {
+        return new ModelAndView("artistProfile");
     }
     /*----------------------------------------- Usser Controllers Started ------------------------------------------------------ */
 
@@ -263,6 +296,13 @@ public class UserController {
         return result;
     }
     
+    @RequestMapping(value = "/artist/{aid}", method = RequestMethod.GET)
+    public ModelAndView getArtistById(@PathVariable int aid) {   
+        Artist ar= artistService.getArtistById(aid);
+        ModelAndView model= new ModelAndView("artistProfile");
+        model.addObject("artist",ar);
+        return model;
+    }
     
     
     
@@ -312,7 +352,21 @@ public class UserController {
      /*----------------------------------------- Order Controllers Ended ------------------------------------------------------ */
     
     
+    /*----------------------------------------- Category Controllers Started ------------------------------------------------------ */
     
+    @RequestMapping(value = "/category", method = RequestMethod.GET)
+    public CategoryDTO getCategory() {
+        List<Category> ca = categoryService.getCategory();
+        CategoryDTO result = new CategoryDTO();
+        result.setCode("200");
+        result.setStatus("successfull");
+        result.setCategory(ca);
+        result.setMessage(" all category");
+        return result;
+    }
+    
+    
+    /*----------------------------------------- Category Controllers Ended ------------------------------------------------------ */
     
     
     

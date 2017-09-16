@@ -55,5 +55,18 @@ public class ArtistDaoImpl implements ArtistDao{
         session.close();
         return result;
     }
+
+    @Override
+    public Artist getArtistById(int aid) {
+        Session session = HibernateUtil.getSessionFactory().openSession();
+        session.beginTransaction();
+        String hql = "from Artist artist  where artist_id =:artist_id";
+        Query query = session.createQuery(hql);
+        query.setParameter("artist_id", aid);
+        Artist ar = (Artist) query.list();
+        session.getTransaction().commit();
+        session.close();
+        return ar;
+    }
     
 }

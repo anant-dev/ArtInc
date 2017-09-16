@@ -6,6 +6,7 @@ C:\Users\anants\Documents\NetBeansProjects\ArtInc\src\main\java\com\mindfire\DTO
 C:\Users\anants\Documents\NetBeansProjects\ArtInc\src\main\java\com\mindfire\service\ArtistServiceImpl.java
 C:\Users\anants\Documents\NetBeansProjects\ArtInc\src\main\java\com\mindfire\DTO\UserDTO.java
 C:\Users\anants\Documents\NetBeansProjects\ArtInc\src\main\java\com\mindfire\dao\OrderDaoImpl.java
+C:\Users\anants\Documents\NetBeansProjects\ArtInc\src\main\java\com\mindfire\dao\CategoryDaoImpl.java
 C:\Users\anants\Documents\NetBeansProjects\ArtInc\src\main\java\com\mindfire\dao\ProductDao.java
 C:\Users\anants\Documents\NetBeansProjects\ArtInc\src\main\java\com\mindfire\model\Order.java
 C:\Users\anants\Documents\NetBeansProjects\ArtInc\src\main\java\com\mindfire\dao\UserDao.java
@@ -13,6 +14,7 @@ C:\Users\anants\Documents\NetBeansProjects\ArtInc\src\main\java\com\mindfire\con
 C:\Users\anants\Documents\NetBeansProjects\ArtInc\src\main\java\com\mindfire\service\ArtistService.java
 C:\Users\anants\Documents\NetBeansProjects\ArtInc\src\main\java\com\mindfire\service\OrderServiceImpl.java
 C:\Users\anants\Documents\NetBeansProjects\ArtInc\src\main\java\com\mindfire\service\ProductServiceImpl.java
+C:\Users\anants\Documents\NetBeansProjects\ArtInc\src\main\java\com\mindfire\service\CategoryServiceImpl.java
 C:\Users\anants\Documents\NetBeansProjects\ArtInc\src\main\java\com\mindfire\dao\ArtistDaoImpl.java
 C:\Users\anants\Documents\NetBeansProjects\ArtInc\src\main\java\com\mindfire\DTO\ProductListDTO.java
 C:\Users\anants\Documents\NetBeansProjects\ArtInc\src\main\java\com\mindfire\service\UserService.java
@@ -21,11 +23,15 @@ C:\Users\anants\Documents\NetBeansProjects\ArtInc\src\main\java\com\mindfire\DTO
 C:\Users\anants\Documents\NetBeansProjects\ArtInc\src\main\java\com\mindfire\model\Artist.java
 C:\Users\anants\Documents\NetBeansProjects\ArtInc\src\main\java\com\mindfire\service\ProductService.java
 C:\Users\anants\Documents\NetBeansProjects\ArtInc\src\main\java\com\mindfire\DTO\ProductDTO.java
+C:\Users\anants\Documents\NetBeansProjects\ArtInc\src\main\java\com\mindfire\DTO\CategoryDTO.java
 C:\Users\anants\Documents\NetBeansProjects\ArtInc\src\main\java\com\mindfire\config\WebInitializer.java
 C:\Users\anants\Documents\NetBeansProjects\ArtInc\src\main\java\com\mindfire\dao\OrderDao.java
+C:\Users\anants\Documents\NetBeansProjects\ArtInc\src\main\java\com\mindfire\dao\CategoryDao.java
 C:\Users\anants\Documents\NetBeansProjects\ArtInc\src\main\java\com\mindfire\model\User.java
+C:\Users\anants\Documents\NetBeansProjects\ArtInc\src\main\java\com\mindfire\service\CategoryService.java
 C:\Users\anants\Documents\NetBeansProjects\ArtInc\src\main\java\com\mindfire\model\Product.java
 C:\Users\anants\Documents\NetBeansProjects\ArtInc\src\main\java\com\mindfire\service\OrderService.java
 C:\Users\anants\Documents\NetBeansProjects\ArtInc\src\main\java\com\mindfire\dao\ArtistDao.java
 C:\Users\anants\Documents\NetBeansProjects\ArtInc\src\main\java\com\mindfire\DTO\OrderDTO.java
+C:\Users\anants\Documents\NetBeansProjects\ArtInc\src\main\java\com\mindfire\model\Category.java
 C:\Users\anants\Documents\NetBeansProjects\ArtInc\src\main\java\com\mindfire\dao\ProductDaoImpl.java

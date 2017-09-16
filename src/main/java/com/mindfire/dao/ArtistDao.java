@@ -13,7 +13,12 @@ import java.util.List;
  * @author anants
  */
 public interface ArtistDao {
+
     public int saveArtist(Artist artist);
+
     public List<Artist> getArtist();
+
+    public Artist getArtistById(int aid);
+
     public int updateArtist(Artist artist);
 }

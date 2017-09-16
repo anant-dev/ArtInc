@@ -18,5 +18,7 @@ public interface ArtistService {
 
     public List<Artist> getArtist();
 
+    public Artist getArtistById(int aid);
+
     public int updateArtist(Artist artist);
 }
