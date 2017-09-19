@@ -46,5 +46,20 @@ public class ProductServiceImpl implements ProductService{
         return productDao.deleteProduct(product_id);
     }
 
+    @Override
+    public List<Product> getProductByCategory(int c_id) {
+        return productDao.getProductByCategory(c_id);
+    }
+
+    @Override
+    public List<Product> getProductBySize(int size) {
+        return productDao.getProductBySize(size);
+    }
+
+    @Override
+    public Product getProductById(int id) {
+        return productDao.getProductById(id);
+    }
+
   
 }

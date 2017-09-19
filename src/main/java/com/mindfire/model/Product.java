@@ -19,20 +19,22 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name = "product_details")
-public class Product implements Serializable{
+public class Product implements Serializable {
+
     @Id
     @Column(name = "product_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int product_id;
     private String title;
     private String description;
-    private String category;
     private String location;
     private int artist_id;
-    private String p_size;
     private String price;
     private String numb_sold;
-     private String artist_name;
+    private String artist_name;
+    private int category;
+    private int p_size;
+    private String thumbnail;
 
     public int getProduct_id() {
         return product_id;
@@ -58,14 +60,6 @@ public class Product implements Serializable{
         this.description = description;
     }
 
-    public String getCategory() {
-        return category;
-    }
-
-    public void setCategory(String category) {
-        this.category = category;
-    }
-
     public String getLocation() {
         return location;
     }
@@ -80,14 +74,6 @@ public class Product implements Serializable{
 
     public void setArtist_id(int artist_id) {
         this.artist_id = artist_id;
-    }
-
-    public String getP_size() {
-        return p_size;
-    }
-
-    public void setP_size(String p_size) {
-        this.p_size = p_size;
     }
 
     public String getPrice() {
@@ -113,5 +99,29 @@ public class Product implements Serializable{
     public void setArtist_name(String artist_name) {
         this.artist_name = artist_name;
     }
-    
+
+    public int getCategory() {
+        return category;
+    }
+
+    public void setCategory(int category) {
+        this.category = category;
+    }
+
+    public int getP_size() {
+        return p_size;
+    }
+
+    public void setP_size(int p_size) {
+        this.p_size = p_size;
+    }
+
+    public String getThumbnail() {
+        return thumbnail;
+    }
+
+    public void setThumbnail(String thumbnail) {
+        this.thumbnail = thumbnail;
+    }
+
 }

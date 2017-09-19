@@ -4,48 +4,106 @@
     Author     : anants
 --%>
 
+<%@page import="com.mindfire.model.User"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
     <head>
-        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>JSP Page</title>
+        <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/css/materialize.min.css">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+        <link rel="stylesheet" href="resources/css/style.css">
     </head>
     <body>
-        <div id="bg">
+        <!--Navbar starts here-->
+        <div >
             <div class="navbar-fixed">
-                <nav class="nav z-depth-0">
+                <nav class="indigo darken-4 z-depth-3">
                     <div class="nav-wrapper container">
                         <a href="#" class="brand-logo ">Art Inc.</a>
                         <ul id="nav-mobile" class="right hide-on-med-and-down">
-                            <li id="navSignup"><a class="modal-trigger" href="#modal1">SignUp</a></li>
-                            <li id="navLogin"><a class="modal-trigger" href="#loginModal">Login</a></li>
+                            <%
+                                User user = (User) session.getAttribute("user");
+                                if (user != null) {
+                            %>
                             <li><a class="dropdown-button" href="#!" data-activates="dropdown1">Show By<i class="material-icons right">arrow_drop_down</i></a></li>
-                            <li><a class="dropdown-button" href="#!" data-activates="dropdown2" id="myaccount">Show By<i class="material-icons right">arrow_drop_down</i></a></li>                        
+                            <li><a class="dropdown-button" href="#!" data-activates="dropdown2" >My Account<i class="material-icons right">arrow_drop_down</i></a></li> 
+                                <% if (user.getUser_type() == 1) {%>
+                            <li><a href="myProfile">My Profile</a></li>
+                                <% } %>
+                            <li><a id="logout" href="logout">Logout</a></li>
+                                <% }%>
                         </ul>
                     </div>
                 </nav>
             </div>
-            <div class="container" style="padding-top: 100px">
-                <h1 class="center white-text"> Art Inc.</h1>
-                <h4 id="tag" class="center white-text"></h4>
-            </div>
+             
 
-        </div>
-         <!-- Dropdown Structure -->
+        </div>    
+        <!-- Dropdown Structure -->
         <ul id="dropdown1" class="dropdown-content">
-            <li><a href="#!">Artist Name</a></li>
+            <li><a href="byArtist">Artist Name</a></li>
             <li class="divider"></li>
-            <li><a href="#!">Art Size</a></li>
+            <li><a href="bySize">Art Size</a></li>
             <li class="divider"></li>
-            <li><a href="#!">Category</a></li>
+            <li><a href="byType">Category</a></li>
         </ul>
         <ul id="dropdown2" class="dropdown-content">
-            <li><a href="#!">Artist Name</a></li>
+            <li><a href="order">My Orders</a></li>
             <li class="divider"></li>
-            <li><a href="#!">Art Size</a></li>
-            <li class="divider"></li>
-            <li><a href="#!">Category</a></li>
+            <li><a href="cart">My Cart</a></li>
         </ul>
+        <!--Navbar Ends here-->
+        <!--        show Artists profile in cards-->
+        <h4 class="center" style="padding-top: 30px"> My Cart</h4>
+        <div style="display: flex;padding-left: 50px; padding-top: 30px">
+            <div class="card row" style="flex: 2;padding: 20px" id="cart" >
+                
+            </div>
+
+            <div style="flex: 1">
+                <div class=" row ">
+                    <div class="col s12">
+                        <div class="card horizontal">
+                            <div class="card-stacked">
+                                <div class="card-content">
+                                    <h5 class="card-title center">Order Details:</h5>
+                                    <p style="font-size: 18px;">Total Items:</p>
+                                    <p style="font-size: 18px;">SubTotal :<b> </b></p>
+                                    <p style="font-size: 18px;">Shipping Charges: </b></p>                                    
+                                    <p class="divider" style="font-size: 18px;"></p>                               
+                                    <p style="font-size: 18px;">Total Amout To be Paid<b> </b></p>
+                                </div>
+                                <div class="card-action center">
+                                    <a href="orderConfirm">Proceed to confirm order</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>      
+        </div>
+
+
+        <!--        footer starts here-->
+        <footer class="page-footer indigo darken-4">
+            <div class="footer-copyright">
+                <div class="container">
+                    © 2017 Copyright &emsp; &emsp; &emsp; &emsp; Made with <i class="fa fa-heart" aria-hidden="true"></i>	 while drinking <i class="fa fa-coffee" aria-hidden="true"></i>
+                    <a class="grey-text text-lighten-4 right" href="#!">More Links</a>
+                </div>
+            </div>
+        </footer>
+        <!--        footer ends here-->
+        <!--Scripts to be imported in sequence-->
+        <script type="text/javascript" src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/js/materialize.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/typed.js/1.1.1/typed.min.js"></script>
+        <script src="resources/js/main.js"></script>
+        <script>
+            $(document).ready(function () {
+                showCartAjax();
+            });
+        </script>
     </body>
 </html>

@@ -39,6 +39,16 @@ public class ArtistServiceImpl implements ArtistService {
     public Artist getArtistById(int aid) {
         return artistDao.getArtistById(aid);
     }
+
+    @Override
+    public Artist getArtistByUserId(int uid) {
+        return artistDao.getArtistByUserId(uid);
+    }
+
+    @Override
+    public int updateProfilePic(String location, int usr_id) {
+        return artistDao.updateProfilePic(location,usr_id);
+    }
     
     
     

@@ -32,4 +32,17 @@ public class CategoryDaoImpl implements CategoryDao {
         return categorys;
     }
 
+    @Override
+    public Category getCategoryById(int caid) {
+        Session session = HibernateUtil.getSessionFactory().openSession();
+        session.beginTransaction();
+        String hql = "from Category category where c_id =:c_id";
+        Query query = session.createQuery(hql);
+        query.setParameter("c_id", caid);
+        Category category= (Category) query.uniqueResult();
+        session.getTransaction().commit();
+        session.close();
+        return category;
+    }
+
 }

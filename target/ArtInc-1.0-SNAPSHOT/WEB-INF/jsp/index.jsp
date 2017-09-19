@@ -66,9 +66,9 @@
             <li><a href="byType">Category</a></li>
         </ul>
         <ul id="dropdown2" class="dropdown-content">
-            <li><a href="order">My Orders</a></li>
+            <li><a href="myorder">My Orders</a></li>
             <li class="divider"></li>
-            <li><a href="cart">My Cart</a></li>
+            <li><a href="mycart">My Cart</a></li>
         </ul>
         <!--Navbar Ends here-->
 
@@ -112,7 +112,7 @@
                 </div>-->
         <!--    floating Cart Action Button-->
         <div class="fixed-action-btn" style="bottom: 45px; right: 24px;">
-            <a class="btn-floating btn-large waves-effect waves-light indigo darken-4 z-depth-3"> <i class="fa fa-shopping-cart" aria-hidden="true"></i></a>
+            <a class="btn-floating btn-large waves-effect waves-light indigo darken-4 z-depth-3" href="mycart"> <i class="fa fa-shopping-cart" aria-hidden="true"></i></a>
         </div>
         <!--    <p id="feedback"></p>-->
         <!-- SignUp Modal -->

@@ -178,7 +178,7 @@
                         </div>
                         <div class="card-content">
                             <span class="card-title">Small Size Art</span>
-                            <p><a href="product/size/1">Show Art</a></p>
+                            <p><a href="sizeArt?sid=1">Show Art</a></p>
                         </div>
                     </div>
                 </div>
@@ -189,7 +189,7 @@
                         </div>
                         <div class="card-content">
                             <span class="card-title">Medium Size Art</span>
-                            <p><a href="product/size/2">Show Art</a></p>
+                            <p><a href="sizeArt?sid=2">Show Art</a></p>
                         </div>
                     </div>
                 </div>
@@ -200,7 +200,7 @@
                         </div>
                         <div class="card-content">
                             <span class="card-title">Large Size Art</span>
-                            <p><a href="product/size/3">Show Art</a></p>
+                            <p><a href="sizeArt?sid=3">Show Art</a></p>
                         </div>
                     </div>
                 </div>
@@ -211,7 +211,7 @@
                         </div>
                         <div class="card-content">
                             <span class="card-title">Xtra Large Size Art</span>
-                            <p><a href="product/size/4">Show Art</a></p>
+                            <p><a href="sizeArt?sid=4">Show Art</a></p>
                         </div>
                     </div>
                 </div>

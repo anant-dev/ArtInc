@@ -31,12 +31,13 @@ public class OrderDaoImpl implements OrderDao{
     }
 
     @Override
-    public List<Order> getOrder(int user_id) {
+    public List<Order> getOrder(int user_id,int status) {
         Session session = HibernateUtil.getSessionFactory().openSession();
         session.beginTransaction();
-        String hql = "from Order order where user_id =:user_id";
+        String hql = "from Order order where user_id =:user_id and status =:status";
         Query query = session.createQuery(hql);
         query.setParameter("user_id", user_id);
+        query.setParameter("status", status);
         List<Order> or = (List<Order>) query.list();
         session.getTransaction().commit();
         session.close();

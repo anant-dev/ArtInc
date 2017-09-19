@@ -16,5 +16,5 @@ public interface OrderService {
 
     public int saveOrder(Order order);
 
-    public List<Order> getOrder(int user_id);
+    public List<Order> getOrder(int user_id,int status);
 }

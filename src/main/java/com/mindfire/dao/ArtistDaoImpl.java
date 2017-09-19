@@ -63,10 +63,37 @@ public class ArtistDaoImpl implements ArtistDao{
         String hql = "from Artist artist  where artist_id =:artist_id";
         Query query = session.createQuery(hql);
         query.setParameter("artist_id", aid);
-        Artist ar = (Artist) query.list();
+        Artist ar = (Artist) query.uniqueResult();
         session.getTransaction().commit();
         session.close();
         return ar;
+    }
+
+    @Override
+    public Artist getArtistByUserId(int uid) {
+        Session session = HibernateUtil.getSessionFactory().openSession();
+        session.beginTransaction();
+        String hql = "from Artist artist  where usr_id =:usr_id";
+        Query query = session.createQuery(hql);
+        query.setParameter("usr_id", uid);
+        Artist ar = (Artist) query.uniqueResult();
+        session.getTransaction().commit();
+        session.close();
+        return ar;
+    }
+
+    @Override
+    public int updateProfilePic(String location, int usr_id) {
+        Session session = HibernateUtil.getSessionFactory().openSession();
+        session.beginTransaction();
+        String hql ="update Artist artist set profile_pic =:profile_pic where usr_id =:usr_id ";
+        Query query = session.createQuery(hql);
+        query.setParameter("profile_pic", location);
+        query.setParameter("usr_id", usr_id);
+        int result = query.executeUpdate();
+        session.getTransaction().commit();
+        session.close();
+        return result;
     }
     
 }

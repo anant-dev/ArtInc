@@ -26,7 +26,8 @@ public class Order implements Serializable{
     private int order_id;
     private int user_id;
     private int product_id;
-    private String status;
+    private int status;
+    
 
     public int getOrder_id() {
         return order_id;
@@ -52,11 +53,13 @@ public class Order implements Serializable{
         this.product_id = product_id;
     }
 
-    public String getStatus() {
+    public int getStatus() {
         return status;
     }
 
-    public void setStatus(String status) {
+    public void setStatus(int status) {
         this.status = status;
     }
+
+    
 }

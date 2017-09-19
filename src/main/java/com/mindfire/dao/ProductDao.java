@@ -13,9 +13,20 @@ import java.util.List;
  * @author anants
  */
 public interface ProductDao {
+
     public int saveProduct(Product product);
+
     public List<Product> getProductByArtist(int artist_id);
+
+    public List<Product> getProductByCategory(int c_id);
+
+    public List<Product> getProductBySize(int size);
+
     public List<Product> getProduct();
+
+    public Product getProductById(int id);
+
     public int updateProduct(Product product);
+
     public int deleteProduct(int product_id);
 }

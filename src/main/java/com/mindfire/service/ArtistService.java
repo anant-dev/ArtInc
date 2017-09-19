@@ -20,5 +20,9 @@ public interface ArtistService {
 
     public Artist getArtistById(int aid);
 
+    public Artist getArtistByUserId(int uid);
+
     public int updateArtist(Artist artist);
+    
+    public int updateProfilePic(String location, int usr_id);
 }

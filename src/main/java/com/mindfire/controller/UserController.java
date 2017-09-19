@@ -8,6 +8,8 @@ package com.mindfire.controller;
 import com.mindfire.DTO.ArtistDTO;
 import com.mindfire.DTO.ArtistListDTO;
 import com.mindfire.DTO.CategoryDTO;
+import com.mindfire.DTO.DataDTO;
+import com.mindfire.DTO.MyCartDTO;
 import com.mindfire.DTO.OrderDTO;
 import com.mindfire.DTO.OrderListDTO;
 import com.mindfire.DTO.ProductDTO;
@@ -23,12 +25,21 @@ import com.mindfire.service.CategoryService;
 import com.mindfire.service.OrderService;
 import com.mindfire.service.ProductService;
 import com.mindfire.service.UserService;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
+import java.io.BufferedOutputStream;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
+import net.coobird.thumbnailator.Thumbnails;
+import net.coobird.thumbnailator.name.Rename;
 import org.mindrot.jbcrypt.BCrypt;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpRequest;
@@ -42,6 +53,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.multipart.commons.CommonsMultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
 /**
@@ -53,16 +66,16 @@ public class UserController {
 
     @Autowired
     UserService userService;
-    
+
     @Autowired
     ProductService productService;
-    
+
     @Autowired
     ArtistService artistService;
-    
+
     @Autowired
     OrderService orderService;
-    
+
     @Autowired
     CategoryService categoryService;
 
@@ -70,6 +83,7 @@ public class UserController {
     public ModelAndView showform() {
         return new ModelAndView("index");
     }
+
     @RequestMapping(value = "/logout")
     public ModelAndView logout(HttpServletRequest request) {
         HttpSession session = request.getSession(false);
@@ -78,37 +92,102 @@ public class UserController {
 //        result.setCode("200");
 //        result.setMessage("Successfully Loged Out");
 //        result.setStatus("successful");
-         return new ModelAndView("redirect:/");
+        return new ModelAndView("redirect:/");
     }
+
     // Show By controller
     @RequestMapping("/byArtist")
     public ModelAndView showByArtist() {
         return new ModelAndView("showByArtist");
     }
+
     @RequestMapping("/bySize")
     public ModelAndView showBySize() {
         return new ModelAndView("showBySize");
     }
+
     @RequestMapping("/byType")
     public ModelAndView showByType() {
         return new ModelAndView("showByType");
     }
-    
+
     //My Account Controller
     @RequestMapping("/order")
     public ModelAndView showOrder() {
         return new ModelAndView("order");
     }
+
     @RequestMapping("/cart")
     public ModelAndView showCart() {
         return new ModelAndView("cart");
     }
-    @RequestMapping("/myProfile")
-    public ModelAndView showProfile() {
-        return new ModelAndView("artistProfile");
-    }
-    /*----------------------------------------- Usser Controllers Started ------------------------------------------------------ */
 
+    @RequestMapping("/myProfile")
+    public ModelAndView showProfile(HttpServletRequest request) {
+        HttpSession session = request.getSession(false);
+        User user = (User) session.getAttribute("user");
+        ModelAndView model;
+        if (user == null || user.getEmail().equals("")) {
+            model = new ModelAndView("error");
+            model.addObject("error", "No Session");
+            model.addObject("message", "Session Expired do login Again");
+
+        } else {
+            Artist ar = artistService.getArtistByUserId(user.getUser_id());
+            System.out.println("details   " + ar + "---" + user.getUser_id());
+            if (!ar.getArtist_name().equals("")) {
+                model = new ModelAndView("artistProfile");
+                model.addObject("artist", ar);
+            } else {
+                model = new ModelAndView("index");
+            }
+        }
+        return model;
+
+    }
+
+    @RequestMapping(value = "/sizeArt", method = RequestMethod.GET)
+    public ModelAndView showSize(HttpServletRequest request) {
+        int sid = Integer.parseInt(request.getParameter("sid"));
+        ModelAndView model = new ModelAndView("showProduct");
+        model.addObject("size", sid);
+        model.addObject("type", "productBySize");
+        return model;
+    }
+
+    @RequestMapping(value = "/mycart", method = RequestMethod.GET)
+    public ModelAndView getMyCart(HttpServletRequest request) {
+        HttpSession session = request.getSession(false);
+        User user = (User) session.getAttribute("user");
+        ModelAndView model;
+        if (user == null || user.getEmail().equals("")) {
+            model = new ModelAndView("error");
+            model.addObject("error", "No Session");
+            model.addObject("message", "Session Expired do login Again");
+
+        } else {
+            model = new ModelAndView("cart");
+        }
+        return model;
+    }
+
+    @RequestMapping(value = "/myorder", method = RequestMethod.GET)
+    public ModelAndView getMyOrders(HttpServletRequest request) {
+        HttpSession session = request.getSession(false);
+        User user = (User) session.getAttribute("user");
+        ModelAndView model;
+        if (user == null || user.getEmail().equals("")) {
+            model = new ModelAndView("error");
+            model.addObject("error", "No Session");
+            model.addObject("message", "Session Expired do login Again");
+
+        } else {
+            model = new ModelAndView("order");
+        }
+        return model;
+    }
+
+    /*----------------------------------------- Usser Controllers Started ------------------------------------------------------ */
     @RequestMapping(value = "/login")
     public UserDTO getStatus(String email, String password, HttpServletRequest request) {
         User us = userService.getUser(email);
@@ -192,10 +271,36 @@ public class UserController {
     }
 
     //Get Product By Artist
-    @RequestMapping(value = "/productByArtist", method = RequestMethod.POST)
-    public ProductListDTO getProductByArtist(String a_id) {
-        int artist_id = Integer.parseInt(a_id);
+    @RequestMapping(value = "/productByArtist", method = RequestMethod.GET)
+    public ProductListDTO getProductByArtist(String id) {
+        int artist_id = Integer.parseInt(id);
         List<Product> plist = (List<Product>) productService.getProductByArtist(artist_id);
+        ProductListDTO result = new ProductListDTO();
+        result.setCode("200");
+        result.setStatus("successfull");
+        result.setPlist(plist);
+        result.setMessage("product reciecved");
+        return result;
+    }
+
+    //Get Product By Artist
+    @RequestMapping(value = "/productBySize", method = RequestMethod.GET)
+    public ProductListDTO getProductBySize(String id) {
+        int size = Integer.parseInt(id);
+        List<Product> plist = (List<Product>) productService.getProductBySize(size);
+        ProductListDTO result = new ProductListDTO();
+        result.setCode("200");
+        result.setStatus("successfull");
+        result.setPlist(plist);
+        result.setMessage("product reciecved");
+        return result;
+    }
+
+    //Get Product By Artist
+    @RequestMapping(value = "/productByCategory", method = RequestMethod.GET)
+    public ProductListDTO getProductByCategory(String id) {
+        int category = Integer.parseInt(id);
+        List<Product> plist = (List<Product>) productService.getProductByCategory(category);
         ProductListDTO result = new ProductListDTO();
         result.setCode("200");
         result.setStatus("successfull");
@@ -244,7 +349,6 @@ public class UserController {
     }
 
     /*----------------------------------------- Product Controllers Ended ------------------------------------------------------ */
-    
  /*----------------------------------------- Artist Controllers Started ------------------------------------------------------ */
     // Add Artist
     @RequestMapping(value = "/artist", method = RequestMethod.POST)
@@ -295,25 +399,20 @@ public class UserController {
         result.setMessage(" all artists");
         return result;
     }
-    
-    @RequestMapping(value = "/artist/{aid}", method = RequestMethod.GET)
-    public ModelAndView getArtistById(@PathVariable int aid) {   
-        Artist ar= artistService.getArtistById(aid);
-        ModelAndView model= new ModelAndView("artistProfile");
-        model.addObject("artist",ar);
+
+    @RequestMapping(value = "/artistArt", method = RequestMethod.GET)
+    public ModelAndView getArtistById(HttpServletRequest request) {
+        int aid = Integer.parseInt(request.getParameter("aid"));
+        Artist ar = artistService.getArtistById(aid);
+        System.out.println(" value " + request.getParameter("aid"));
+        ModelAndView model = new ModelAndView("showProduct");
+        model.addObject("artist", ar);
+        model.addObject("type", "productByArtist");
         return model;
     }
-    
-    
-    
 
     /*----------------------------------------- Artist Controllers Ended ------------------------------------------------------ */
-    
-    
-    
-    /*----------------------------------------- Order Controllers Started ------------------------------------------------------ */
-    
-    
+ /*----------------------------------------- Order Controllers Started ------------------------------------------------------ */
     // Add Order
     @RequestMapping(value = "/order", method = RequestMethod.POST)
     public OrderDTO saveOrder(@ModelAttribute("order") Order order) {
@@ -332,28 +431,73 @@ public class UserController {
         }
         return result;
     }
-    
+
     //Get Order
-    @RequestMapping(value = "/order", method = RequestMethod.GET)
-    public OrderListDTO getOrder(String u_id) {
-        int user_id= Integer.parseInt(u_id);
-        List<Order> olist = orderService.getOrder(user_id);
-        OrderListDTO result = new OrderListDTO();
-        result.setCode("200");
-        result.setStatus("successfull");
-        result.setOlist(olist);
-        result.setMessage(" all artists");
+    @RequestMapping(value = "/myorderitems", method = RequestMethod.GET)
+    public MyCartDTO getOrder(HttpServletRequest request) {
+        HttpSession session = request.getSession(false);
+        User user = (User) session.getAttribute("user");
+        MyCartDTO result = new MyCartDTO();
+        if (user == null || user.getEmail().equals("")) {
+            result.setCode("400");
+            result.setStatus("unsuccessfull");
+            result.setMessage("Bad Request : NO SESSION Avaliable");
+        } else {
+            List<Order> olist = orderService.getOrder(user.getUser_id(), 1);
+            List<Product> plist = new ArrayList<>();
+            if (olist.isEmpty()) {
+                result.setCode("200");
+                result.setStatus("unsuccessfull");
+                result.setMessage("There are No orders");
+            } else {
+                for (Order od : olist) {
+                    plist.add(productService.getProductById(od.getProduct_id()));
+                }
+
+                result.setCode("200");
+                result.setStatus("successfull");
+                result.setMessage("orders and products recieved");
+                result.setOlist(olist);
+                result.setPlist(plist);
+            }
+        }
         return result;
     }
-    
-    
-    
-    
-     /*----------------------------------------- Order Controllers Ended ------------------------------------------------------ */
-    
-    
-    /*----------------------------------------- Category Controllers Started ------------------------------------------------------ */
-    
+
+    @RequestMapping(value = "/mycartitems", method = RequestMethod.GET)
+    public MyCartDTO getMyCartItems(HttpServletRequest request) {
+        HttpSession session = request.getSession(false);
+        User user = (User) session.getAttribute("user");
+        MyCartDTO result = new MyCartDTO();
+        if (user == null || user.getEmail().equals("")) {
+            result.setCode("400");
+            result.setStatus("unsuccessfull");
+            result.setMessage("Bad Request : NO SESSION Avaliable");
+        } else {
+            List<Order> olist = orderService.getOrder(user.getUser_id(), 0);
+            List<Product> plist = new ArrayList<>();;
+            if (olist.isEmpty()) {
+                result.setCode("200");
+                result.setStatus("unsuccessfull");
+                result.setMessage("There are No orders");
+            } else {
+                for (Order od : olist) {
+                    plist.add(productService.getProductById(od.getProduct_id()));
+                }
+
+                result.setCode("200");
+                result.setStatus("successfull");
+                result.setMessage("orders and products recieved");
+                result.setOlist(olist);
+                result.setPlist(plist);
+            }
+        }
+        return result;
+    }
+
+    /*----------------------------------------- Order Controllers Ended ------------------------------------------------------ */
+
+ /*----------------------------------------- Category Controllers Started ------------------------------------------------------ */
     @RequestMapping(value = "/category", method = RequestMethod.GET)
     public CategoryDTO getCategory() {
         List<Category> ca = categoryService.getCategory();
@@ -364,12 +508,97 @@ public class UserController {
         result.setMessage(" all category");
         return result;
     }
-    
-    
+
+    @RequestMapping(value = "/categoryArt", method = RequestMethod.GET)
+    public ModelAndView getCategoryById(HttpServletRequest request) {
+        int caid = Integer.parseInt(request.getParameter("caid"));
+        Category ca = categoryService.getCategoryById(caid);
+        ModelAndView model = new ModelAndView("showProduct");
+        model.addObject("category", ca);
+        model.addObject("type", "productByCategory");
+        return model;
+    }
+
     /*----------------------------------------- Category Controllers Ended ------------------------------------------------------ */
-    
-    
-    
+ /*----------------------------------------- Artist Edit Controllers starts ------------------------------------------------------ */
+    @RequestMapping(value = "/uploadPic", method = RequestMethod.POST)
+    public DataDTO picSave(@RequestParam("uploadFile") MultipartFile files,HttpServletRequest request) {
+        HttpSession session = request.getSession(false);
+        User user = (User) session.getAttribute("user");
+        String path = "E:/Uploads/profile_pic";
+        String prefix = UUID.randomUUID().toString();
+        String fileName = files.getOriginalFilename();
+        int status = 0;
+        DataDTO result = new DataDTO();
+        try {
+            byte[] bytes = files.getBytes();
+            BufferedOutputStream stream = new BufferedOutputStream(new FileOutputStream(new File(path + File.separator + prefix + fileName)));
+            stream.write(bytes);
+            stream.flush();
+            stream.close();
+            String picToSave = "uploads/profile_pic/" + prefix + fileName;
+            status = artistService.updateProfilePic(picToSave, user.getUser_id());
+            if (status == 0) {
+                result.setCode("500");
+                result.setStatus("unsuccessfull");
+                result.setMessage("Something went wrong please try later");
+            } else {
+                result.setCode("200");
+                result.setStatus("successfull");
+                result.setMessage("Profile picture changed");
+                result.setData(picToSave);
+            }
+        } catch (FileNotFoundException ex) {
+            result.setCode("500");
+            result.setStatus("unsuccessfull");
+            result.setMessage("Choose a valid file");
+        } catch (IOException ex) {
+            result.setCode("400");
+            result.setStatus("unsuccessfull");
+            result.setMessage("BAD REQUEST");
+        }
+        return result;
+    }
+
+    @RequestMapping(value = "/saveProduct", method = RequestMethod.POST)
+    public ModelAndView saveProduct(@ModelAttribute Product product, @RequestParam("productPicture") CommonsMultipartFile file, HttpSession session,
+            String artist_name, String artist_id) {
+        int a_id = Integer.parseInt(artist_id);
+        String path = "E:/Uploads/products";
+        String prefix = UUID.randomUUID().toString();
+        String fileName = file.getOriginalFilename();
+        ModelAndView model = new ModelAndView("redirect:/myProfile");
+        System.out.println("upload data" + product.getArtist_name() + product.getDescription() + product.getNumb_sold() + product.getCategory() + product.getP_size());
+
+        try {
+            byte[] bytes = file.getBytes();
+            BufferedOutputStream stream = new BufferedOutputStream(new FileOutputStream(new File(path + File.separator + prefix + fileName)));
+            stream.write(bytes);
+            stream.flush();
+            stream.close();
+            File thumbpath = new File("E:/Uploads/thumbnail");
+            System.out.println("above thumbnail");
+            Thumbnails.of(path + File.separator + prefix + fileName)
+                    .size(200, 200)
+                    .toFiles(thumbpath, Rename.PREFIX_DOT_THUMBNAIL);
+            String sourceImg = "uploads/products/" + prefix + fileName;
+            String thumbnailImg = "uploads/thumbnail/thumbnail." + prefix + fileName;
+            System.out.println("below thumbnail" + thumbnailImg);
+            product.setLocation(sourceImg);
+            product.setArtist_id(a_id);
+            product.setArtist_name(artist_name);
+            product.setThumbnail(thumbnailImg);
+            productService.saveProduct(product);
+            //User user = userService.editPic((int) session.getAttribute("user_id"), picToSave);
+
+        } catch (Exception ex) {
+            System.out.println("exception " + ex);
+            model.addObject("message", "Something Went wrong Try Again Later");
+        }
+        return model;
+    }
+    /*----------------------------------------- Artist Edit Controllers ends ------------------------------------------------------ */
+
 //    @RequestMapping(value = "/edit", method = RequestMethod.GET)
 //    public RestWrapperDTO getEmployeeInJSON() {
 //        RestWrapperDTO wrapperDTO = new RestWrapperDTO();

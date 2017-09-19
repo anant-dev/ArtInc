@@ -59,7 +59,7 @@ public class ProductDaoImpl implements ProductDao {
     public int updateProduct(Product product) {
         Session session = HibernateUtil.getSessionFactory().openSession();
         session.beginTransaction();
-        String hql ="update Product product set title = :title, description =: description, category =: category, price =: price";
+        String hql = "update Product product set title = :title, description =: description, category =: category, price =: price";
         Query query = session.createQuery(hql);
         query.setParameter("title", product.getTitle());
         query.setParameter("description", product.getDescription());
@@ -82,6 +82,45 @@ public class ProductDaoImpl implements ProductDao {
         session.getTransaction().commit();
         session.close();
         return result;
+    }
+
+    @Override
+    public List<Product> getProductByCategory(int c_id) {
+        Session session = HibernateUtil.getSessionFactory().openSession();
+        session.beginTransaction();
+        String hql = "from Product product where category =:category";
+        Query query = session.createQuery(hql);
+        query.setParameter("category",c_id);
+        List<Product> pr = (List<Product>) query.list();
+        session.getTransaction().commit();
+        session.close();
+        return pr;
+    }
+
+    @Override
+    public List<Product> getProductBySize(int size) {
+        Session session = HibernateUtil.getSessionFactory().openSession();
+        session.beginTransaction();
+        String hql = "from Product product where p_size =:p_size";
+        Query query = session.createQuery(hql);
+        query.setParameter("p_size", size);
+        List<Product> pr = (List<Product>) query.list();
+        session.getTransaction().commit();
+        session.close();
+        return pr;
+    }
+
+    @Override
+    public Product getProductById(int id) {
+        Session session = HibernateUtil.getSessionFactory().openSession();
+        session.beginTransaction();
+        String hql = "from Product product where product_id =:product_id";
+        Query query = session.createQuery(hql);
+        query.setParameter("product_id", id);
+        Product product= (Product) query.uniqueResult();
+        session.getTransaction().commit();
+        session.close();
+        return product;
     }
 
 }
