@@ -24,7 +24,7 @@
             <div class="navbar-fixed">
                 <nav class="nav z-depth-0">
                     <div class="nav-wrapper container">
-                        <a href="#" class="brand-logo ">Art Inc.</a>
+                        <a href="home" class="brand-logo ">Art Inc.</a>
                         <ul id="nav-mobile" class="right hide-on-med-and-down">
                             <%
                                 HttpSession ss = request.getSession(false);
@@ -183,71 +183,6 @@
 
         <div class="container" style="padding-top: 50px;margin-bottom: 100px; height: 900px" >
             <div class="row" id="products">
-
-                <!--            <div class="col s3">
-                                <div class="card">
-                                    <div class="card-image">
-                                        <img src="http://lorempixel.com/500/500/nature">
-                
-                                        <a class="btn-floating btn-large halfway-fab waves-effect waves-light indigo darken-4">
-                                            <i class="fa fa-shopping-cart" aria-hidden="true"></i></a>
-                                    </div>
-                                    <div class="card-content">
-                                        <span class="card-title">Art Title</span>
-                                        <p class="counter" style="font-size: 15px;"> By <a href="#">Artist name</a></p>
-                                        <p class="counter" style="font-size: 25px;">300<span class="unit" style="font-size: 12px;"> RS</span>
-                                        <p><a href="#">More Info</a></p>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col s3">
-                                <div class="card">
-                                    <div class="card-image">
-                                        <img src="http://lorempixel.com/500/500/nature">
-                
-                                        <a class="btn-floating btn-large halfway-fab waves-effect waves-light indigo darken-4">
-                                            <i class="fa fa-shopping-cart" aria-hidden="true"></i></a>
-                                    </div>
-                                    <div class="card-content">
-                                        <span class="card-title">Art Title</span>
-                                        <p class="counter" style="font-size: 15px;"> By <a href="#">Artist name</a></p>
-                                        <p class="counter" style="font-size: 25px;">300<span class="unit" style="font-size: 12px;"> RS</span>
-                                        <p><a href="#">More Info</a></p>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col s3">
-                                <div class="card">
-                                    <div class="card-image">
-                                        <img src="http://lorempixel.com/500/500/nature">
-                
-                                        <a class="btn-floating halfway-fab btn-large waves-effect waves-light indigo darken-4">
-                                            <i class="fa fa-shopping-cart" aria-hidden="true"></i></a>
-                                    </div>
-                                    <div class="card-content">
-                                        <span class="card-title">Art Title</span>
-                                        <p class="counter" style="font-size: 15px;"> By <a href="#">Artist name</a></p>
-                                        <p class="counter" style="font-size: 25px;">300<span class="unit" style="font-size: 12px;"> RS</span>
-                                        <p><a href="#">More Info</a></p>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col s3">
-                                <div class="card">
-                                    <div class="card-image">
-                                        <img src="http://lorempixel.com/500/500/nature">
-                
-                                        <a class="btn-floating  halfway-fab btn-large waves-effect waves-light indigo darken-4">
-                                            <i class="fa fa-shopping-cart" aria-hidden="true"></i></a>
-                                    </div>
-                                    <div class="card-content">
-                                        <span class="card-title">Art Title</span>
-                                        <p class="counter" style="font-size: 15px;"> By <a href="#">Artist name</a></p>
-                                        <p class="counter" style="font-size: 25px;">300<span class="unit" style="font-size: 12px;"> RS</span>
-                                        <p><a href="#">More Info</a></p>
-                                    </div>
-                                </div>
-                            </div>-->
             </div>
 
         </div>

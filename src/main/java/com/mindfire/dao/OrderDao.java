@@ -13,6 +13,12 @@ import java.util.List;
  * @author anants
  */
 public interface OrderDao {
+
     public int saveOrder(Order order);
-    public List<Order> getOrder(int user_id,int status);
+
+    public List<Order> getOrder(int user_id, int status);
+
+    public int deleteOrder(int order_id);
+    
+    public int updateOrder(int order_id,int status);
 }

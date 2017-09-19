@@ -21,7 +21,7 @@
             <div class="navbar-fixed">
                 <nav class="nav z-depth-0">
                     <div class="nav-wrapper container">
-                        <a href="#" class="brand-logo ">Art Inc.</a>
+                        <a href="home" class="brand-logo ">Art Inc.</a>
                         <ul id="nav-mobile" class="right hide-on-med-and-down">
                             <%
                                 User user = (User) session.getAttribute("user");

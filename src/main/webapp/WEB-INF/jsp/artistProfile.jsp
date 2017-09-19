@@ -21,14 +21,14 @@
             <div class="navbar-fixed">
                 <nav class="indigo darken-4 z-depth-3">
                     <div class="nav-wrapper container">
-                        <a href="#" class="brand-logo ">Art Inc.</a>
+                        <a href="home" class="brand-logo ">Art Inc.</a>
                         <ul id="nav-mobile" class="right hide-on-med-and-down">
                             <%
                                 User user = (User) session.getAttribute("user");
                                 Artist artist = (Artist) request.getAttribute("artist");
                                 if (user != null) {
                             %>
-                            <li><a class="dropdown-button" href="#!" data-activates="dropdown1">Show By<i class="material-icons right">arrow_drop_down</i></a></li>
+                            <li><a class="dropdown-button" href="" data-activates="dropdown1">Show By<i class="material-icons right">arrow_drop_down</i></a></li>
                             <li><a class="dropdown-button" href="#!" data-activates="dropdown2" >My Account<i class="material-icons right">arrow_drop_down</i></a></li> 
                             <li><a id="logout" href="logout">Logout</a></li>
                                 <% }%>

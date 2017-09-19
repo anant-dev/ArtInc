@@ -29,4 +29,6 @@ public interface ProductDao {
     public int updateProduct(Product product);
 
     public int deleteProduct(int product_id);
+
+    public int increaseCount(int product_id, String count);
 }

@@ -19,6 +19,7 @@ com\mindfire\service\OrderService.class
 com\mindfire\dao\ProductDao.class
 com\mindfire\service\CategoryService.class
 com\mindfire\DTO\MyCartDTO.class
+com\mindfire\util\MailUtil.class
 com\mindfire\dao\OrderDaoImpl.class
 com\mindfire\util\HibernateUtil.class
 com\mindfire\config\WebInitializer.class
@@ -36,4 +37,5 @@ com\mindfire\dao\CategoryDao.class
 com\mindfire\service\CategoryServiceImpl.class
 com\mindfire\service\ArtistService.class
 com\mindfire\model\Order.class
+com\mindfire\controller\UserController$1.class
 com\mindfire\DTO\ProductListDTO.class

@@ -61,5 +61,11 @@ public class ProductServiceImpl implements ProductService{
         return productDao.getProductById(id);
     }
 
+    @Override
+    public int increaseCount(int product_id, String count) {
+       
+        return productDao.increaseCount(product_id, count);
+    }
+
   
 }

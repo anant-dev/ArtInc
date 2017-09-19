@@ -20,7 +20,7 @@
             <div class="navbar-fixed">
                 <nav class="indigo darken-4 z-depth-3">
                     <div class="nav-wrapper container">
-                        <a href="#" class="brand-logo ">Art Inc.</a>
+                        <a href="home" class="brand-logo ">Art Inc.</a>
                         <ul id="nav-mobile" class="right hide-on-med-and-down">
                             <%
                                 User user = (User) session.getAttribute("user");
@@ -66,16 +66,17 @@
                     <div class="col s12">
                         <div class="card horizontal">
                             <div class="card-stacked">
-                                <div class="card-content">
-                                    <h5 class="card-title center">Order Details:</h5>
-                                    <p style="font-size: 18px;">Total Items:</p>
-                                    <p style="font-size: 18px;">SubTotal :<b> </b></p>
-                                    <p style="font-size: 18px;">Shipping Charges: </b></p>                                    
-                                    <p class="divider" style="font-size: 18px;"></p>                               
-                                    <p style="font-size: 18px;">Total Amout To be Paid<b> </b></p>
+                                <div class="card-content" style="padding-left: 100px">
+                                    <h5 class="card-title"><b>Order Details:</b></h5>
+                                    <p style="font-size: 20px;padding-top: 20px" id="items"></p>
+                                    <p style="font-size: 20px;padding-top: 20px" id="price"><b> </b></p>
+                                    <p style="font-size: 20px;padding-top: 20px">Shipping Charges: FREE </b></p>                                    
+                                    <p class="divider indigo darken-4" style="padding-top: 5px; margin-top: 20px"></p>                               
+                                    <p style="font-size: 20px;padding-top: 20px" id="t_price"><b> </b></p>
+                                    <p class="divider indigo darken-4" style="padding-top: 5px; margin-top: 20px"></p>  
                                 </div>
                                 <div class="card-action center">
-                                    <a href="orderConfirm">Proceed to confirm order</a>
+                                    <a href="checkout" class="indigo-text text-darken-4">Proceed to confirm order</a>
                                 </div>
                             </div>
                         </div>

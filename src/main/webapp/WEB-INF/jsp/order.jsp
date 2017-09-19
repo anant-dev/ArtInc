@@ -20,7 +20,7 @@
             <div class="navbar-fixed">
                 <nav class="indigo darken-4 z-depth-3">
                     <div class="nav-wrapper container">
-                        <a href="#" class="brand-logo ">Art Inc.</a>
+                        <a href="home" class="brand-logo ">Art Inc.</a>
                         <ul id="nav-mobile" class="right hide-on-med-and-down">
                             <%
                                 User user = (User) session.getAttribute("user");
@@ -55,7 +55,7 @@
         </ul>
         <!--Navbar Ends here-->
         <!--        show Artists profile in cards-->
-        <h4 class="center" style="padding-top: 30px"> My Cart</h4>
+        <h4 class="center" style="padding-top: 30px"> My Orders</h4>
         <div class="container" style=";padding-left: 50px; padding-top: 30px">
             <div class="card row" style="flex: 2;padding: 20px" id="order" >
                 

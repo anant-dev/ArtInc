@@ -170,6 +170,7 @@ $('#artistCheck').change(function () {
 //    });
 //});
 
+// show prodct on index page
 function showProductsAjax() {
     $.ajax({
         type: "GET",
@@ -195,7 +196,7 @@ function showProduct(data) {
                                 <div class="card" id="' + obj.product_id + '">\n\
                                     <div class="card-image">\n\
                                         <img src="' + obj.location + '" style="height:200px">\n\
-                                            <a class="btn-floating btn-large halfway-fab waves-effect waves-light indigo darken-4">\n\
+                                            <a class="btn-floating btn-large halfway-fab waves-effect waves-light indigo darken-4 cart">\n\
                                             <i class="fa fa-shopping-cart" aria-hidden="true"></i></a>\n\
                                     </div>\n\
                                     <div class="card-content">\n\
@@ -308,7 +309,7 @@ function showProducts(data) {
                                 <div class="card" id="' + obj.product_id + '">\n\
                                     <div class="card-image">\n\
                                         <img src="' + obj.location + '" style="height:200px">\n\
-                                            <a class="btn-floating btn-large halfway-fab waves-effect waves-light indigo darken-4">\n\
+                                            <a class="btn-floating btn-large halfway-fab waves-effect waves-light indigo darken-4 cart">\n\
                                             <i class="fa fa-shopping-cart" aria-hidden="true"></i></a>\n\
                                     </div>\n\
                                     <div class="card-content">\n\
@@ -380,6 +381,9 @@ function showCartAjax() {
     });
 }
 function showCart(data) {
+    $( "#items" ).html( "Total Items:  "+data.items );
+    $( "#price" ).html( "SubTotal :  "+data.price );
+    $( "#t_price" ).html( "Total Amout To be Paid :  "+data.price );
     $.each(data.plist, function (idx, obj) {
         $('#cart').append('<div class="col s12 m12">\n\
                                     <div class="card horizontal" id="' + data.olist[idx].order_id + '">\n\
@@ -388,7 +392,7 @@ function showCart(data) {
                                         </div>\n\
                                         <div class="card-stacked">\n\
                                             <div class="card-content" style="padding-left: 100px">\n\
-                                                <a class="waves-effect waves-light right" id="delete"><i class="material-icons">delete</i></a>\n\
+                                                <a class="waves-effect waves-light right" id="delete" href="deleteOrder?oid=' + data.olist[idx].order_id + '"><i class="material-icons">delete</i></a>\n\
                                                 <h5>' + obj.title + '</h5>\n\
                                                 <p class="counter" style="font-size: 18px;"> By <a href="#">' + obj.artist_name + '</a></p>\n\
                                                 <p class="counter" style="font-size: 20px;">Price : ' + obj.price + '<span class="unit" style="font-size: 12px;"> RS</span>\n\
@@ -439,7 +443,7 @@ function showOrder(data) {
     
 }
 
-
+//upload profile picture
 $("#uploadPic").click(function (event) {
     event.preventDefault();
     $("#uploadFile:hidden").trigger("click");
@@ -487,4 +491,27 @@ $("#productPicture:hidden").change(function () {
     document.getElementById("upload").style.display = "none";
     
     //uploadAjax();
+});
+
+// Add to cart functionality
+$("#products").on("click", "a.cart", function (event) {
+    event.preventDefault();
+    var id = $(this).parent().parent().attr("id");
+    $.ajax({
+        type: "GET",
+        url: "addToCart",
+        data: {
+            product_id : id
+        },
+        success: function (data) {
+            Materialize.toast(data.message, 4000);
+        },
+        error: function (e) {
+            Materialize.toast("There was an error performing operation", 4000);
+        },
+        done: function (e) {
+            alert(e);
+        }
+
+    });
 });

@@ -123,4 +123,18 @@ public class ProductDaoImpl implements ProductDao {
         return product;
     }
 
+    @Override
+    public int increaseCount(int product_id, String count) {
+        Session session = HibernateUtil.getSessionFactory().openSession();
+        session.beginTransaction();
+        String hql = "update Product product set numb_sold =:numb_sold where product_id =:product_id";
+        Query query = session.createQuery(hql);
+        query.setParameter("numb_sold",count);
+        query.setParameter("product_id",product_id);
+        int result = query.executeUpdate();
+        session.getTransaction().commit();
+        session.close();
+        return result;
+    }
+
 }

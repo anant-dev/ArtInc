@@ -25,6 +25,7 @@ import com.mindfire.service.CategoryService;
 import com.mindfire.service.OrderService;
 import com.mindfire.service.ProductService;
 import com.mindfire.service.UserService;
+import com.mindfire.util.MailUtil;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -35,6 +36,9 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.Properties;
+import javax.mail.PasswordAuthentication;
+import javax.mail.Session;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
@@ -80,8 +84,12 @@ public class UserController {
     CategoryService categoryService;
 
     @RequestMapping("/")
-    public ModelAndView showform() {
+    public ModelAndView showIndex() {
         return new ModelAndView("index");
+    }
+    @RequestMapping("/home")
+    public ModelAndView showHome() {
+        return new ModelAndView("redirect:/");
     }
 
     @RequestMapping(value = "/logout")
@@ -475,7 +483,9 @@ public class UserController {
             result.setMessage("Bad Request : NO SESSION Avaliable");
         } else {
             List<Order> olist = orderService.getOrder(user.getUser_id(), 0);
-            List<Product> plist = new ArrayList<>();;
+            List<Product> plist = new ArrayList<>();
+            float price = 0;
+            int item = 0;
             if (olist.isEmpty()) {
                 result.setCode("200");
                 result.setStatus("unsuccessfull");
@@ -484,15 +494,59 @@ public class UserController {
                 for (Order od : olist) {
                     plist.add(productService.getProductById(od.getProduct_id()));
                 }
-
+                for (Product pr : plist) {
+                    item++;
+                    price += Float.parseFloat(pr.getPrice());
+                }
                 result.setCode("200");
                 result.setStatus("successfull");
                 result.setMessage("orders and products recieved");
                 result.setOlist(olist);
                 result.setPlist(plist);
+                result.setPrice(price);
+                result.setItems(item);
             }
         }
         return result;
+    }
+
+    @RequestMapping(value = "/addToCart", method = RequestMethod.GET)
+    public DataDTO addToCart(String product_id, HttpServletRequest request) {
+        int p_id = Integer.parseInt(product_id);
+        int status = 0;
+        HttpSession session = request.getSession(false);
+        User user = (User) session.getAttribute("user");
+        Order order = new Order();
+        order.setProduct_id(p_id);
+        order.setUser_id(user.getUser_id());
+        order.setStatus(0);
+        status = orderService.saveOrder(order);
+        DataDTO result = new DataDTO();
+        if (status == 0) {
+            result.setCode("400");
+            result.setStatus("unsuccessfull");
+            result.setMessage("Something went wrong Try Again Later");
+        } else {
+            result.setCode("200");
+            result.setStatus("successfull");
+            result.setMessage("Item Added to Cart");
+        }
+        return result;
+    }
+
+    @RequestMapping(value = "/deleteOrder", method = RequestMethod.GET)
+    public ModelAndView deleteOrder(HttpServletRequest request) {
+        HttpSession session = request.getSession(false);
+        User user = (User) session.getAttribute("user");
+        ModelAndView model;
+        int order_id = Integer.parseInt(request.getParameter("oid"));
+        if (user == null || user.getEmail().equals("")) {
+            model = new ModelAndView("redirect:/");
+        } else {
+            int status = orderService.deleteOrder(order_id);
+            model = new ModelAndView("redirect:/mycart");
+        }
+        return model;
     }
 
     /*----------------------------------------- Order Controllers Ended ------------------------------------------------------ */
@@ -522,10 +576,10 @@ public class UserController {
     /*----------------------------------------- Category Controllers Ended ------------------------------------------------------ */
  /*----------------------------------------- Artist Edit Controllers starts ------------------------------------------------------ */
     @RequestMapping(value = "/uploadPic", method = RequestMethod.POST)
-    public DataDTO picSave(@RequestParam("uploadFile") MultipartFile files,HttpServletRequest request) {
+    public DataDTO picSave(@RequestParam("uploadFile") MultipartFile files, HttpServletRequest request) {
         HttpSession session = request.getSession(false);
         User user = (User) session.getAttribute("user");
-        String path = "E:/Uploads/profile_pic";
+        String path = "E:/uploads/profile_pic";
         String prefix = UUID.randomUUID().toString();
         String fileName = files.getOriginalFilename();
         int status = 0;
@@ -564,7 +618,7 @@ public class UserController {
     public ModelAndView saveProduct(@ModelAttribute Product product, @RequestParam("productPicture") CommonsMultipartFile file, HttpSession session,
             String artist_name, String artist_id) {
         int a_id = Integer.parseInt(artist_id);
-        String path = "E:/Uploads/products";
+        String path = "E:/uploads/products";
         String prefix = UUID.randomUUID().toString();
         String fileName = file.getOriginalFilename();
         ModelAndView model = new ModelAndView("redirect:/myProfile");
@@ -576,7 +630,7 @@ public class UserController {
             stream.write(bytes);
             stream.flush();
             stream.close();
-            File thumbpath = new File("E:/Uploads/thumbnail");
+            File thumbpath = new File("E:/uploads/thumbnail");
             System.out.println("above thumbnail");
             Thumbnails.of(path + File.separator + prefix + fileName)
                     .size(200, 200)
@@ -597,7 +651,53 @@ public class UserController {
         }
         return model;
     }
+
     /*----------------------------------------- Artist Edit Controllers ends ------------------------------------------------------ */
+    @RequestMapping(value = "/checkout", method = RequestMethod.GET)
+    public ModelAndView sendMail(HttpServletRequest request) {
+        HttpSession session = request.getSession(false);
+        User user = (User) session.getAttribute("user");
+        final String username = "artincofficial";
+        final String password = "mindfire";
+        if (user == null || user.getEmail().equals("")) {
+             return new ModelAndView("redirect:/");
+        } else {
+            List<Order> olist = orderService.getOrder(user.getUser_id(), 0);
+            List<String> attachments = new ArrayList<>();
+            for (Order od : olist) {
+                Product product = productService.getProductById(od.getProduct_id());
+                int count= Integer.parseInt( product.getNumb_sold());
+                count++;
+                attachments.add(product.getLocation());
+                orderService.updateOrder(od.getOrder_id(), 1);
+                productService.increaseCount(product.getProduct_id(), Integer.toString(count));
+            }
+
+            String host = "smtp.gmail.com";
+            Properties props = new Properties();
+            props.put("mail.smtp.auth", "true");
+            props.put("mail.smtp.starttls.enable", "true");
+            props.put("mail.smtp.host", host);
+            props.put("mail.smtp.port", "587");
+            props.put("mail.user", "artincofficial@gmail.com");
+            props.put("mail.password", password);
+            // set the session object
+            Session s = Session.getInstance(props,
+                    new javax.mail.Authenticator() {
+                public PasswordAuthentication getPasswordAuthentication() {
+                    return new PasswordAuthentication(username, password);
+                }
+            });
+
+            MailUtil.sendAttachmentEmail(s,user.getEmail(), "Your Orders From Art Inc",
+                    "Please find the Products you ordered in the attachment below. Thanks For Ordering from Art Inc, Hope to see you soon Again !!", attachments);
+            
+            return new ModelAndView("redirect:/myorder");
+
+        }
+
+        //update order table and increase count of sold painting
+    }
 
 //    @RequestMapping(value = "/edit", method = RequestMethod.GET)
 //    public RestWrapperDTO getEmployeeInJSON() {

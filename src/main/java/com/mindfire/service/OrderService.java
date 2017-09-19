@@ -17,4 +17,8 @@ public interface OrderService {
     public int saveOrder(Order order);
 
     public List<Order> getOrder(int user_id,int status);
+    
+    public int deleteOrder(int order_id);
+    
+    public int updateOrder(int order_id,int status);
 }

@@ -19,6 +19,8 @@ public class MyCartDTO {
     String message;
     List<Order> olist;
     List<Product> plist;
+    float price;
+    int items; 
     
 
     public String getCode() {
@@ -59,6 +61,22 @@ public class MyCartDTO {
 
     public void setPlist(List<Product> plist) {
         this.plist = plist;
+    }
+
+    public float getPrice() {
+        return price;
+    }
+
+    public void setPrice(float price) {
+        this.price = price;
+    }
+
+    public int getItems() {
+        return items;
+    }
+
+    public void setItems(int items) {
+        this.items = items;
     }
     
 }
