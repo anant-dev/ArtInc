@@ -7,6 +7,7 @@
 <%@page import="com.mindfire.model.Artist"%>
 <%@page import="com.mindfire.model.User"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@ page session="true" %>
 <!DOCTYPE html>
 <html>
     <head>
@@ -87,29 +88,29 @@
                                 <option value="1">abstract1</option>
                                 <option value="2">animal</option>
                                 <option value="3">automobile</option>
-                                 <option value="4">celebration</option>
+                                <option value="4">celebration</option>
                                 <option value="5">creative</option>
                                 <option value="6">food and drink</option>
-                                 <option value="7">nature</option>
+                                <option value="7">nature</option>
                                 <option value="8">scenery</option>
                                 <option value="9">spiritual</option>
-                                 <option value="10">sports</option>
+                                <option value="10">sports</option>
                                 <option value="11">vector</option>
                                 <option value="12">others</option>
                             </select>
                             <label>Category Select</label>
                         </div>
-                        
+
                     </div>
                     <div class="input-field col s6">
                         <select name="p_size" required>
-                                <option value="" disabled selected>Choose the Size of Image</option>
-                                <option value="1">small</option>
-                                <option value="2">medium</option>
-                                <option value="3">large</option>
-                                <option value="4">extra Large</option>
-                            </select>
-                            <label>Image Size Select</label>
+                            <option value="" disabled selected>Choose the Size of Image</option>
+                            <option value="1">small</option>
+                            <option value="2">medium</option>
+                            <option value="3">large</option>
+                            <option value="4">extra Large</option>
+                        </select>
+                        <label>Image Size Select</label>
                     </div>
                 </div>
                 <div class="row">
@@ -151,10 +152,12 @@
             <div class="col s12 m8 l8">
                 <div class="card" style="min-height: 400px">
                     <div class="card-content about">
-                        <!--<a id="upload" name="edit" title="edit Profile" class="indigo darken-4 right btn-floating btn-large halfway-fab z-depth-5"><i class="material-icons">mode_edit</i></a>-->
+                        <a id="editProfile" name="editProfile" title="edit Profile" class="indigo darken-4 right btn-floating btn-large halfway-fab z-depth-5"><i class="material-icons">mode_edit</i></a>
+                        <a id="editProfile" name="editProfile" title="edit Profile" class="indigo darken-4 right btn-floating btn-large halfway-fab z-depth-5" style="display:none"><i class="material-icons">save</i></a>
+                        
                         <span class="card-title "><h4 class="indigo-text text-darken-4 center"><b><%=  artist.getArtist_name()%></b></h4></span>
-
-                        <span><p class="indigo-text text-darken-4 center" style="font-size: 20px;"><b>Description :</b> <%=artist.getDescription()%></p></span>
+                        <span><p class="indigo-text text-darken-4 " style="font-size: 20px;"><b>Description :</b></p></span>
+                        <textarea id="description" class="materialize-textarea" style="font-size: 18px; min-height: 120px" maxlength="300" disabled> <%=artist.getDescription()%></textarea>
                         <br>
                         <h5 class="indigo-text text-darken-4 center" style="font-size: 22px;"><b>Place :</b>  <%=artist.getPlace()%></h5>
                         <h5 class="indigo-text text-darken-4 center" style="font-size: 22px;"><b>Number of Works : </b><%= artist.getNumb_img()%></h5>

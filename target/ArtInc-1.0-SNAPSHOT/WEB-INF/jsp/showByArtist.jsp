@@ -68,7 +68,7 @@
         <!--Navbar Ends here-->
         <!--    floating Cart Action Button-->
         <div class="fixed-action-btn" style="bottom: 45px; right: 24px;">
-            <a class="btn-floating btn-large waves-effect waves-light indigo darken-4 z-depth-3"><i class="fa fa-shopping-cart" aria-hidden="true"></i></a>
+            <a class="btn-floating btn-large waves-effect waves-light indigo darken-4 z-depth-3" href="mycart"><i class="fa fa-shopping-cart" aria-hidden="true"></i></a>
         </div>
 
         <!--Login Modal-->
@@ -106,68 +106,105 @@
         <!-- SignUp Modal -->
         <div id="modal1" class="modal"  style="weidth:600px; height: auto; padding: 20px 150px  0px 150px">
             <h4 class="pink-text text-darken-2" style="font-size: 30px"><b>Sign Up :</b></h4>
-
-            <div class="row">
-                <div class="input-field col s12">
-                    <input id="name" type="text" class="validate " name='name'>
-                    <label for="name">Name *</label>
+            <form id="signupForm" method="post" class="col s12">
+                <div class="row">
+                    <div class="input-field col s12">
+                        <input id="name" type="text" class="validate " name='name'>
+                        <label for="name">Name *</label>
+                    </div>
                 </div>
-            </div>
-            <div class="row">
-                <div class="input-field col s12">
-                    <input id="semail" type="email" class="validate" name='email'>
-                    <label for="semail">Email *</label>
+                <div class="row">
+                    <div class="input-field col s12">
+                        <input id="semail" type="email" class="validate" name='semail'>
+                        <label for="semail">Email *</label>
+                    </div>
                 </div>
-            </div>
-            <div class="row">
-                <div class="input-field col s12">
-                    <input id="spassword" type="password" class="validate" name='password'>
-                    <label for="spassword">Password *</label>
+                <div class="row">
+                    <div class="input-field col s12">
+                        <input id="spassword" type="password" class="validate" name='spassword'>
+                        <label for="spassword">Password *</label>
+                    </div>
                 </div>
-            </div>
-            <div class="row">
-                <div class="input-field col s12">
-                    <input id="cnfpassword" type="password" class="validate" name='cnfpass'>
-                    <label for="cnfpassword">Confirm Password *</label>
+                <div class="row">
+                    <div class="input-field col s12">
+                        <input id="cnfpassword" type="password" class="validate" name='cnfpass'>
+                        <label for="cnfpassword">Confirm Password *</label>
+                    </div>
                 </div>
-            </div>
-            <div class="row">
-                <div class="col s3">
-                    <label>Gender : *</label>
+                <div class="row">
+                    <div class="col s3">
+                        <label>Gender : *</label>
+                    </div>
+                    <div class="col s3">
+                        <input name="gender" type="radio" id="male" value="male"/>
+                        <label for="male">Male</label>
+                    </div>
+                    <div class="col s3">
+                        <input name="gender" type="radio" id="female" value="female"/>
+                        <label for="female">Female</label>
+                    </div>
+                    <div class="col s3">
+                        <input name="gender" type="radio" id="others" value="others"/>
+                        <label for="others">Others</label>
+                    </div>
                 </div>
-                <div class="col s3">
-                    <input name="gender" type="radio" id="male" value="male"/>
-                    <label for="male">Male</label>
+                <div class="row">
+                    <div class="input-field col s12">
+                        <input id="contact" type="number" class="validate" name='contact'>
+                        <label for="contact">Contact Number *</label>
+                    </div>
                 </div>
-                <div class="col s3">
-                    <input name="gender" type="radio" id="female" value="female"/>
-                    <label for="female">Female</label>
+                <div class="row">
+                    <div class="col s12">
+                        <input type="checkbox" id="isArtist" name="isArtist"/>
+                        <label for="isArtist">Do you want To be an Artist</label>
+                    </div>
                 </div>
-                <div class="col s3">
-                    <input name="gender" type="radio" id="others" value="others"/>
-                    <label for="others">Others</label>
+                <br>
+                <div class="center">
+                    <button class="btn waves-effect waves-light light-blue darken-4 z-depth-2" type="submit" name="action" id="signup" style="margin-left: 30px">SignUp
+                        <i class="fa fa-fighter-jet right" aria-hidden="true"></i>
+                    </button>
                 </div>
-            </div>
-            <div class="row">
-                <div class="input-field col s12">
-                    <input id="contact" type="number" class="validate" name='contact'>
-                    <label for="contact">Contact Number *</label>
+                <br>
+            </form>
+        </div>
+        
+        <!-- add Artist Profile Modal Starts here-->
+        <div id="artist" class="modal"  style="weidth:600px; height: auto; padding: 20px 150px  0px 150px">
+            <h4 class="pink-text text-darken-2" style="font-size: 30px"><b>Add Painting :</b></h4>
+            <form enctype="multipart/form-data" action="signupArtist" method="post">
+                <div class="row">
+                    <div class="input-field col s12">
+                        <input id="description" type="text" class="validate " name='description'>
+                        <label for="description">Description *</label>
+                    </div>
                 </div>
-            </div>
-            <div class="row">
-                <div class="col s12">
-                    <input type="checkbox" id="artistCheck" name="artistCheck"/>
-                    <label for="artistCheck">Do you want To be an Artist</label>
+                <div class="row">
+                    <div class="input-field col s12">
+                        <input id="place" type="text" class="validate " name='place'>
+                        <label for="place">Place *</label>
+                    </div>
                 </div>
-            </div>
-            <br>
-            <div class="center">
-                <button class="btn waves-effect waves-light light-blue darken-4 z-depth-2" id="signup" type="submit" name="action" style="margin-left: 30px">SignUp
-                    <i class="fa fa-fighter-jet right" aria-hidden="true"></i>
-                </button>
-            </div>
+                
+                <div class="row">
+                    <div class="input-field col s12">
+                        <input type="file" style="display: none" id="profilePic" name="profilePic" required="required">
+                    </div>
+                    <div class="input-field col s12 center">
+                        <a class="waves-effect waves-light btn  blue accent-3" id="uploadProfilePic" style="width : 50%"><i class="material-icons left">file_upload</i>Upload Picture</a>
+                    </div>
+                </div>
+                <br>
+                <div class="center">
+                    <button class="btn waves-effect waves-light indigo darken-4 z-depth-2" type="submit" name="action" style="width : 50%">Save Profile
+                        <i class="fa fa-fighter-jet right" aria-hidden="true"></i>
+                    </button>
+                </div>
+            </form>
             <br>
         </div>
+         <!-- add Artist Profile Ends here -->
         <!--        show Artists profile in cards-->
 
         <div class="container" style="padding-top: 50px; margin-bottom: 100px; height: 900px" >

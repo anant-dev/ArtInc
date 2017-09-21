@@ -87,6 +87,7 @@ public class UserController {
     public ModelAndView showIndex() {
         return new ModelAndView("index");
     }
+
     @RequestMapping("/home")
     public ModelAndView showHome() {
         return new ModelAndView("redirect:/");
@@ -195,7 +196,7 @@ public class UserController {
         return model;
     }
 
-    /*----------------------------------------- Usser Controllers Started ------------------------------------------------------ */
+    /*----------------------------------------- User Controllers Started ------------------------------------------------------ */
     @RequestMapping(value = "/login")
     public UserDTO getStatus(String email, String password, HttpServletRequest request) {
         User us = userService.getUser(email);
@@ -208,16 +209,17 @@ public class UserController {
                 result.setCode("200");
                 result.setMessage("Valid User");
                 result.setStatus("successful");
+                result.setMessage("Login Succssful !");
                 result.setUser(us);
             } else {
                 result.setCode("404");
-                result.setStatus("unsuccessfull");
-                result.setMessage("Invalid Credentials");
+                result.setStatus("unsuccessful");
+                result.setMessage("Invalid Credentials !!");
             }
         } else {
             result.setCode("400");
-            result.setStatus("unsuccessfull");
-            result.setMessage("User Does Not Exist Try Sigining Up");
+            result.setStatus("unsuccessful");
+            result.setMessage("User Does Not Exist Try Sigining Up ");
         }
         return result;
     }
@@ -233,7 +235,7 @@ public class UserController {
             HttpSession session = request.getSession();
             session.setAttribute("user", user);
             result.setCode("200");
-            result.setMessage("Valid User");
+            result.setMessage("User Profile Created ....!");
             result.setStatus("successful");
             result.setUser(user);
         } else {
@@ -242,6 +244,44 @@ public class UserController {
             result.setMessage("There was a problem Try Again Later");
         }
         return result;
+    }
+
+    @RequestMapping(value = "/signupArtist", method = RequestMethod.POST)
+    public ModelAndView saveArtist(String description, String place, @RequestParam("profilePic") MultipartFile files, HttpServletRequest request) {
+        HttpSession session = request.getSession(false);
+        User user = (User) session.getAttribute("user");
+        String path = "E:/uploads/profile_pic";
+        String prefix = UUID.randomUUID().toString();
+        String fileName = files.getOriginalFilename();
+        ModelAndView model = new ModelAndView("redirect:/");
+        Artist artist = new Artist();
+        int status = 0;
+        try {
+            byte[] bytes = files.getBytes();
+            BufferedOutputStream stream = new BufferedOutputStream(new FileOutputStream(new File(path + File.separator + prefix + fileName)));
+            stream.write(bytes);
+            stream.flush();
+            stream.close();
+            String picToSave = "uploads/profile_pic/" + prefix + fileName;
+            artist.setArtist_name(user.getName());
+            artist.setDescription(description);
+            artist.setPlace(place);
+            artist.setProfile_pic(picToSave);
+            artist.setNumb_img("0");
+            artist.setUsr_id(user.getUser_id());
+            status = artistService.saveArtist(artist);
+            if (status != 0) {
+                return model;
+            } else {
+                model.addObject("message", "Somrthing went wrong");
+            }
+
+        } catch (FileNotFoundException ex) {
+            model.addObject("message", "File not found");
+        } catch (IOException ex) {
+            model.addObject("message", "IO Exception");
+        }
+        return model;
     }
 
     /*----------------------------------------- User Controllers Ended ------------------------------------------------------ */
@@ -354,6 +394,39 @@ public class UserController {
             result.setMessage("Query not run");
         }
         return result;
+    }
+
+    @RequestMapping(value = "/productDetails", method = RequestMethod.GET)
+    public ModelAndView productDetails(HttpServletRequest request) {
+        int pid = Integer.parseInt(request.getParameter("pid"));
+        Product product = productService.getProductById(pid);
+        ModelAndView model;
+        if (product != null) {
+            Category category = categoryService.getCategoryById(product.getCategory());
+            int size = product.getP_size();
+            String s;
+            if (size == 1) {
+                s = "Small";
+            } else if (size == 2) {
+                s = "Medium";
+            } else if (size == 3) {
+                s = "Large";
+            } else {
+                s = "Extra Large";
+            }
+            model = new ModelAndView("productInfo");
+            model.addObject("product", product);
+            if (category != null) {
+                model.addObject("category", category.getName());
+            } else {
+                model.addObject("category", "Not Available");
+            }
+            model.addObject("size", s);
+        } else {
+            model = new ModelAndView("redirect:/");
+            model.addObject("message", "product Not Found");
+        }
+        return model;
     }
 
     /*----------------------------------------- Product Controllers Ended ------------------------------------------------------ */
@@ -660,13 +733,13 @@ public class UserController {
         final String username = "artincofficial";
         final String password = "mindfire";
         if (user == null || user.getEmail().equals("")) {
-             return new ModelAndView("redirect:/");
+            return new ModelAndView("redirect:/");
         } else {
             List<Order> olist = orderService.getOrder(user.getUser_id(), 0);
             List<String> attachments = new ArrayList<>();
             for (Order od : olist) {
                 Product product = productService.getProductById(od.getProduct_id());
-                int count= Integer.parseInt( product.getNumb_sold());
+                int count = Integer.parseInt(product.getNumb_sold());
                 count++;
                 attachments.add(product.getLocation());
                 orderService.updateOrder(od.getOrder_id(), 1);
@@ -679,7 +752,7 @@ public class UserController {
             props.put("mail.smtp.starttls.enable", "true");
             props.put("mail.smtp.host", host);
             props.put("mail.smtp.port", "587");
-            props.put("mail.user", "artincofficial@gmail.com");
+            props.put("mail.user", "anants@mindfiresolutions.com");
             props.put("mail.password", password);
             // set the session object
             Session s = Session.getInstance(props,
@@ -689,9 +762,9 @@ public class UserController {
                 }
             });
 
-            MailUtil.sendAttachmentEmail(s,user.getEmail(), "Your Orders From Art Inc",
+            MailUtil.sendAttachmentEmail(s, user.getEmail(), "Your Orders From Art Inc",
                     "Please find the Products you ordered in the attachment below. Thanks For Ordering from Art Inc, Hope to see you soon Again !!", attachments);
-            
+
             return new ModelAndView("redirect:/myorder");
 
         }

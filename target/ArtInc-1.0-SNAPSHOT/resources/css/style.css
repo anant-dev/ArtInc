@@ -34,3 +34,25 @@ and open the template in the editor.
 #myProfile{
     display : none;
 }
+/* label color */
+.input-field label {
+    color: #01579b;
+}
+/* label focus color */
+.input-field input[type=email]:focus + label {
+    color: #00b0ff;
+}
+/* label underline focus color */
+.input-field input[type=email]:focus {
+    border-bottom: 1px solid #00b0ff;
+    box-shadow: none;
+}
+/* label focus color */
+.input-field input[type=password]:focus + label {
+    color: #00b0ff;
+}
+/* label underline focus color */
+.input-field input[type=password]:focus {
+    border-bottom: 1px solid #00b0ff;
+    box-shadow: none;
+}

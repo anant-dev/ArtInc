@@ -9,6 +9,7 @@ $(document).ready(function () {
     $('.modal').modal();
     $(".dropdown-button").dropdown();
     $('select').material_select();
+    $('#description').trigger('autoresize');
     $(window).scroll(function () {
         if ($(window).scrollTop() >= 500) {
             $('.nav').css('background', '#1a237e');
@@ -41,20 +42,28 @@ $(function () {
 //for login button click
 $("#login").click(function (event) {
     // Disble the search button
-    $("#login").prop("disabled", false);
+    $("#login").prop("disabled", true);
     // Prevent the form from submitting via the browser.
     event.preventDefault();
-    loginAjax();
-});
-// for signup button click
-$("#signup").click(function (event) {
-    // Disble the search button
-    $("#signup").prop("disabled", true);
-    // Prevent the form from submitting via the browser.
-    event.preventDefault();
-    signUpAjax();
+    if(isEmail($("#lemail").val())){
+        if(isPass($('#lpassword').val())){
+            loginAjax();
+        }
+        else{
+            $("#login").prop("disabled", false);
+        }
+    }else{
+        Materialize.toast("Invalid email format use abc@xyz.com pattern",4000);
+        $("#login").prop("disabled", false);
+    }
+    
 });
 
+//successful
+//unsuccessful
+
+
+// Ajax call for login
 function loginAjax() {
     $.ajax({
         type: "GET",
@@ -65,29 +74,40 @@ function loginAjax() {
         },
         success: function (data) {
             $('#loginModal').modal('close');
-            var json = "<h4>Ajax Response</h4><pre>"
-                    + JSON.stringify(data, null, 4) + "</pre>";
-            $('#feedback').html(json);
+            $("#login").prop("disabled", false);
             if (data.status === "successful") {
                 display(data);
+            }else{
+                Materialize.toast(data.message,4000);
+                $("#lemail").val("");
+                $("#lpassword").val("");
             }
+                
         },
         error: function (e) {
-            console.log("ERROR: ", e);
-            display(e);
+            Materialize.toast("ERROR: "+e,4000);
         },
         done: function (e) {
-            console.log("DONE");
+             Materialize.toast(" Done ",4000);
             enableSearchButton(true);
         }
     });
 
 
 }
+//$( "signupForm" ).submit(function( event )
+// for signup button click
+$("#signup").click(function (event){
+    // Disble the search button
+    $("#signup").prop("disabled", true);
+    // Prevent the form from submitting via the browser.
+    event.preventDefault();
+    signUpUserAjax();
+});
 
-function signUpAjax() {
+function signUpUserAjax() {
     var user_type = 0;
-    if ($('input[name =artistCheck]:checked').val() === 'on') {
+    if ($('input[name = isArtist]:checked').val() === 'on'){
         user_type = 1;
     }
     $.ajax({
@@ -103,6 +123,9 @@ function signUpAjax() {
         },
         success: function (data) {
             $('#modal1').modal('close');
+            if(user_type === 1){
+                $('#artist').modal('open');
+            }
             if (data.status === "successful") {
                 display(data);
             }
@@ -116,9 +139,65 @@ function signUpAjax() {
             enableSearchButton(true);
         }
     });
-
-
 }
+
+$("#uploadProfilePic").click(function (event) {
+    event.preventDefault();
+    $("#profilePic:hidden").trigger("click");
+});
+$("#profilePic:hidden").change(function () {
+    document.getElementById('profilePic').style.display = "block";
+});
+
+//function signUpArtistAjax() {
+//    var form = $('#signupForm')[0];
+//    var data = new FormData(form);
+//    $.ajax({
+//        type: "POST",
+//        enctype:'multipart/form-data',
+//        url: "signupArtist",
+//        processData: false,
+//        contentType: false,
+//        cache: false,
+//        timeout: 600000,
+//        data: data,
+//        success: function (data) {
+//            $('#modal1').modal('close');
+//            if (data.status === "successful") {
+//                display(data);
+//            }
+//        },
+//        error: function (e) {
+//            console.log("ERROR: ", e);
+//            display(e);
+//        },
+//        done: function (e) {
+//            console.log("DONE");
+//            enableSearchButton(true);
+//        }
+//    });
+//}
+
+// validation
+function isEmail(email) {
+  var regex = /^([a-zA-Z0-9_.+-])+\@(([a-zA-Z0-9-])+\.)+([a-zA-Z0-9]{2,4})+$/;
+  return regex.test(email);
+}
+function isPass(pass) {
+  if (pass === "") {
+        Materialize.toast('Password is compulsory', 4000);
+        return false;
+    }
+  else if (pass.length > 12 || pass.length < 4) {
+        Materialize.toast('Password should have 4 - 12 characters', 4000);
+        return false;
+    }
+  else{
+        return true;
+  }
+}
+
+
 
 // on signup and login successfull
 function display(data) {
@@ -136,7 +215,7 @@ function display(data) {
     var li = document.createElement('li');
     li.innerHTML = '<a class="modal-trigger" href="logout">Logout</a>';
     ul.appendChild(li);
-    Materialize.toast('Login Succssful !', 4000);
+    Materialize.toast(data.message, 4000);
 }
 
 $('#artistCheck').change(function () {
@@ -170,6 +249,15 @@ $('#artistCheck').change(function () {
 //    });
 //});
 
+//$("#editProfile").click(function (event) {
+//    
+//}
+//
+//
+
+
+
+
 // show prodct on index page
 function showProductsAjax() {
     $.ajax({
@@ -195,15 +283,15 @@ function showProduct(data) {
         $('#products').append('<div class="col s3">\n\
                                 <div class="card" id="' + obj.product_id + '">\n\
                                     <div class="card-image">\n\
-                                        <img src="' + obj.location + '" style="height:200px">\n\
+                                        <img src="' + obj.thumbnail + '" style="height:200px">\n\
                                             <a class="btn-floating btn-large halfway-fab waves-effect waves-light indigo darken-4 cart">\n\
                                             <i class="fa fa-shopping-cart" aria-hidden="true"></i></a>\n\
                                     </div>\n\
                                     <div class="card-content">\n\
                                         <span class="card-title">' + obj.title + '</span>\n\
-                                        <p class="counter" style="font-size: 15px;"> By <a href="#">' + obj.artist_name + '</a></p>\n\
+                                        <p class="counter" style="font-size: 15px;"> By <a href="artistArt?aid='+obj.artist_id+'">' + obj.artist_name + '</a></p>\n\
                                         <p class="counter" style="font-size: 25px;">' + obj.price + '<span class="unit" style="font-size: 12px;"> RS</span>\n\
-                                        <p><a href="#">More Info</a></p>\n\
+                                        <p><a href="productDetails?pid='+obj.product_id+'">More Info</a></p>\n\
                                     </div>\n\
                                 </div>\n\
                             </div>');
@@ -308,15 +396,15 @@ function showProducts(data) {
         $('#products').append('<div class="col s3">\n\
                                 <div class="card" id="' + obj.product_id + '">\n\
                                     <div class="card-image">\n\
-                                        <img src="' + obj.location + '" style="height:200px">\n\
+                                        <img src="' + obj.thumbnail + '" style="height:200px">\n\
                                             <a class="btn-floating btn-large halfway-fab waves-effect waves-light indigo darken-4 cart">\n\
                                             <i class="fa fa-shopping-cart" aria-hidden="true"></i></a>\n\
                                     </div>\n\
                                     <div class="card-content">\n\
                                         <span class="card-title">' + obj.title + '</span>\n\
-                                        <p class="counter" style="font-size: 15px;"> By <a href="#">' + obj.artist_name + '</a></p>\n\
+                                        <p class="counter" style="font-size: 15px;"> By <a href="artistArt?aid='+obj.artist_id+'">' + obj.artist_name + '</a></p>\n\
                                         <p class="counter" style="font-size: 25px;">' + obj.price + '<span class="unit" style="font-size: 12px;"> RS</span>\n\
-                                        <p><a href="#">More Info</a></p>\n\
+                                        <p><a href="productDetails?pid='+obj.product_id+'">More Info</a></p>\n\
                                     </div>\n\
                                 </div>\n\
                             </div>');
@@ -348,13 +436,13 @@ function showArtistProducts(data) {
         $('#products').append('<div class="col s3">\n\
                                 <div class="card" id="' + obj.product_id + '">\n\
                                     <div class="card-image">\n\
-                                        <img src="' + obj.location + '" style="height:200px">\n\
+                                        <img src="' + obj.thumbnail + '" style="height:200px">\n\
                                     </div>\n\
                                     <div class="card-content">\n\
                                         <span class="card-title">' + obj.title + '</span>\n\
-                                        <p class="counter" style="font-size: 15px;"> By <a href="#">' + obj.artist_name + '</a></p>\n\
+                                        <p class="counter" style="font-size: 15px;"> By ' + obj.artist_name + '</p>\n\
                                         <p class="counter" style="font-size: 25px;">' + obj.price + '<span class="unit" style="font-size: 12px;"> RS</span>\n\
-                                        <p><a href="#">More Info</a></p>\n\
+                                        <p><a href="productDetails?pid='+obj.product_id+'">More Info</a></p>\n\
                                     </div>\n\
                                 </div>\n\
                             </div>');
@@ -388,13 +476,13 @@ function showCart(data) {
         $('#cart').append('<div class="col s12 m12">\n\
                                     <div class="card horizontal" id="' + data.olist[idx].order_id + '">\n\
                                         <div class="card-image">\n\
-                                            <img src="' + obj.location + '" style="height: 200px; width: 200px;">\n\
+                                            <img src="' + obj.thumbnail + '" style="height: 200px; width: 200px;">\n\
                                         </div>\n\
                                         <div class="card-stacked">\n\
                                             <div class="card-content" style="padding-left: 100px">\n\
                                                 <a class="waves-effect waves-light right" id="delete" href="deleteOrder?oid=' + data.olist[idx].order_id + '"><i class="material-icons">delete</i></a>\n\
                                                 <h5>' + obj.title + '</h5>\n\
-                                                <p class="counter" style="font-size: 18px;"> By <a href="#">' + obj.artist_name + '</a></p>\n\
+                                                <p class="counter" style="font-size: 18px;"> By <a href="artistArt?aid='+obj.artist_id+'">' + obj.artist_name + '</a></p>\n\
                                                 <p class="counter" style="font-size: 20px;">Price : ' + obj.price + '<span class="unit" style="font-size: 12px;"> RS</span>\n\
                                             </div>\n\
                                         </div>\n\
@@ -427,12 +515,12 @@ function showOrder(data) {
         $('#order').append('<div class="col s12 m12">\n\
                                     <div class="card horizontal" id="' + data.olist[idx].order_id + '">\n\
                                         <div class="card-image">\n\
-                                            <img src="' + obj.location + '" style="height: 200px; width: 200px;">\n\
+                                            <img src="' + obj.thumbnail + '" style="height: 200px; width: 200px;">\n\
                                         </div>\n\
                                         <div class="card-stacked">\n\
                                             <div class="card-content" style="padding-left: 100px">\n\
                                                 <h5>' + obj.title + '</h5>\n\
-                                                <p class="counter" style="font-size: 18px;"> By <a href="#">' + obj.artist_name + '</a></p>\n\
+                                                <p class="counter" style="font-size: 18px;"> By <a href="artistArt?aid='+obj.artist_id+'">' + obj.artist_name + '</a></p>\n\
                                                 <p class="counter" style="font-size: 20px;">Price : ' + obj.price + '<span class="unit" style="font-size: 12px;"> RS</span>\n\
                                             </div>\n\
                                         </div>\n\

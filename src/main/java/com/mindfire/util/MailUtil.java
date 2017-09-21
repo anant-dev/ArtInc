@@ -37,7 +37,7 @@ public class MailUtil {
             msg.addHeader("Content-Transfer-Encoding", "8bit");
 
             msg.setFrom(new InternetAddress("artincofficial@gmail.com", "NoReply-JD"));
-            msg.setReplyTo(InternetAddress.parse("artincofficial@gmail.com", false));
+            msg.setReplyTo(InternetAddress.parse("anants@mindfiresolutions.com", false));
             msg.setSubject(subject, "UTF-8");
             msg.setSentDate(new Date());
             msg.setRecipients(Message.RecipientType.TO, InternetAddress.parse(toEmail, false));
