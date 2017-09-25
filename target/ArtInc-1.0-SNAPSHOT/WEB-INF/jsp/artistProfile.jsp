@@ -153,11 +153,11 @@
                     <div class="card" style="min-height: 400px">
                         <div class="card-content about">
                             <a id="editProfile" name="editProfile" title="edit Profile" class="indigo darken-4 right btn-floating btn-large halfway-fab z-depth-5"><i class="material-icons">mode_edit</i></a>
-                            <a id="editProfile" name="editProfile" title="edit Profile" class="indigo darken-4 right btn-floating btn-large halfway-fab z-depth-5" style="display:none"><i class="material-icons">save</i></a>
+                            <a id="saveProfile" name="editProfile" title="edit Profile" class="indigo darken-4 right btn-floating btn-large halfway-fab z-depth-5" style="display:none"><i class="material-icons">save</i></a>
 
                             <span class="card-title "><h4 class="indigo-text text-darken-4 center"><b><%=  artist.getArtist_name()%></b></h4></span>
                             <span><p class="indigo-text text-darken-4 " style="font-size: 20px;"><b>Description :</b></p></span>
-                            <textarea id="description" class="materialize-textarea" style="font-size: 18px; min-height: 120px" maxlength="300" disabled> <%=artist.getDescription()%></textarea>
+                            <textarea id="artistDescription" class="materialize-textarea" style="font-size: 18px; min-height: 120px" maxlength="300" disabled> <%=artist.getDescription()%></textarea>
                             <br>
                             <h5 class="indigo-text text-darken-4 center" style="font-size: 22px;"><b>Place :</b>  <%=artist.getPlace()%></h5>
                             <h5 class="indigo-text text-darken-4 center" style="font-size: 22px;"><b>Number of Works : </b><%= artist.getNumb_img()%></h5>

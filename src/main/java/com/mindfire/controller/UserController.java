@@ -89,7 +89,6 @@ public class UserController {
 
     @Autowired
     CategoryService categoryService;
-    
 
     @RequestMapping("/")
     public ModelAndView showIndex(@ModelAttribute("message") String msg) {
@@ -866,7 +865,7 @@ public class UserController {
             result.setMessage("User does not exist");
         } else {
             int otp = (int) (100000 + new Random().nextDouble() * 900000);
-             String host = "smtp.gmail.com";
+            String host = "smtp.gmail.com";
             Properties props = new Properties();
             props.put("mail.smtp.auth", "true");
             props.put("mail.smtp.starttls.enable", "true");
@@ -882,38 +881,67 @@ public class UserController {
                 }
             });
             MailUtil.sendAttachmentEmail(s, email, "Reset Password Initiated",
-                    "The 6 digit OTP to change your Password is - "+otp+"  . Visit the website and enter the OTP to change the password", null);
+                    "The 6 digit OTP to change your Password is - " + otp + "  . Visit the website and enter the OTP to change the password", null);
             result.setCode("200");
             result.setStatus("successfull");
             result.setMessage("OTP Successfully Send");
             result.setData(Integer.toString(otp));
         }
-         return result ;
+        return result;
     }
 
-     
-  @RequestMapping(value = "/changePass", method = RequestMethod.GET)
+    @RequestMapping(value = "/changePass", method = RequestMethod.GET)
     public ModelAndView changePass(String newPass, String nemail, RedirectAttributes redirect, HttpServletRequest request) {
         User ur = userService.getUser(nemail);
         ModelAndView model;
         String password = BCrypt.hashpw(newPass, BCrypt.gensalt());
-        if(ur != null){
-        User user= userService.changePass(nemail, password);
-        if(user !=null){
-             HttpSession session = request.getSession();
-            session.setAttribute("user", user);
-            model = new ModelAndView("redirect:/");
-            redirect.addFlashAttribute("message", "Succusefully Changed Password");
-        } else{
-            model = new ModelAndView("redirect:/");
-            redirect.addFlashAttribute("message", "Unable to change Password Try Again Later");
-        }
-        }else{
+        if (ur != null) {
+            User user = userService.changePass(nemail, password);
+            if (user != null) {
+                HttpSession session = request.getSession();
+                session.setAttribute("user", user);
+                model = new ModelAndView("redirect:/");
+                redirect.addFlashAttribute("message", "Succusefully Changed Password");
+            } else {
+                model = new ModelAndView("redirect:/");
+                redirect.addFlashAttribute("message", "Unable to change Password Try Again Later");
+            }
+        } else {
             model = new ModelAndView("redirect:/");
             redirect.addFlashAttribute("message", "Unable to fetch details");
         }
         return model;
     }
+
+    @RequestMapping(value = "/saveProfile", method = RequestMethod.GET)
+    public DataDTO saveProfile(String description, RedirectAttributes redirect, HttpServletRequest request) {
+        HttpSession session = request.getSession(false);
+        User user = (User) session.getAttribute("user");
+        DataDTO result = new DataDTO();
+        int status = 0;
+        if (user != null) {
+            Artist astist = artistService.getArtistByUserId(user.getUser_id());
+            astist.setDescription(description);
+            status = artistService.updateArtist(astist);
+            if (status != 0) {
+                result.setCode("200");
+                result.setStatus("successful");
+                result.setMessage("Updated Profile");
+                result.setData(description);
+            } else {
+                result.setCode("400");
+                result.setStatus("unsuccessful");
+                result.setMessage("Something went wrong");
+            }
+        } else {
+            result.setCode("400");
+            result.setStatus("unsuccessful");
+            result.setMessage("Login and Try Again !!");
+        }
+
+        return result;
+    }
+
 //    @RequestMapping(value = "/edit", method = RequestMethod.GET)
 //    public RestWrapperDTO getEmployeeInJSON() {
 //        RestWrapperDTO wrapperDTO = new RestWrapperDTO();

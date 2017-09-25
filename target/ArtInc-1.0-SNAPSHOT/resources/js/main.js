@@ -804,3 +804,39 @@ function signUpValidate() {
         return false;
     }
 }
+
+$('#editProfile').click(function (event) { debugger;
+    event.preventDefault();
+    document.getElementById('editProfile').style.display = "none";
+    document.getElementById('saveProfile').style.display = "block";
+    //document.getElementById('description').disabled = "false";
+    $('#artistDescription').prop('disabled', false);
+});
+
+$('#saveProfile').click(function (event) {
+    event.preventDefault();
+     $.ajax({
+        type: "GET",
+        url: "saveProfile",
+        data: {
+            description:$('#artistDescription').val()
+        },
+        success: function (data) {
+            if (data.status === "successfull") {
+                $('#artistDescription').val(data.data);
+            }
+             Materialize.toast(data.message, 4000);
+             $('#artistDescription').prop("disabled", true);   
+             document.getElementById('editProfile').style.display = "block";
+             document.getElementById('saveProfile').style.display = "none";
+        },
+        error: function (e) {
+            Materialize.toast("There was an error performing operation", 4000);
+        },
+        done: function (e) {
+            alert(e);
+        }
+
+    });
+
+});

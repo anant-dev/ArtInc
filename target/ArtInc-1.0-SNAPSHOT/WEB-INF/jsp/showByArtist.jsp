@@ -205,6 +205,56 @@
             <br>
         </div>
          <!-- add Artist Profile Ends here -->
+           <!-- Forget Modal -->
+        <div id="forgetModal" class="modal"  style="weidth:600px; height: auto; padding: 20px 150px  0px 150px">
+            <h4 class="pink-text text-darken-2" style="font-size: 30px"><b>Forget Password :</b></h4>
+                <div class="row">
+                    <div class="input-field col s12">
+                        <input id="femail" type="text" class="validate " name='femail'>
+                        <label for="femail">Email *</label>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="input-field col s12">
+                        <a class="btn  waves-effect waves-light light-blue darken-4 " id="getOtp">Get OTP</a>
+                    </div>
+                </div>
+                 
+<!--            <form id="forgetPass" method="post" class="col s12" style="display: none">-->
+                <div class="row">
+                    <div class="input-field col s12">
+                        <input id="otp" type="text" class="validate" name='otp'>
+                        <label for="otp">Enter the OTP *</label>
+                    </div>
+                </div>
+                <div class="center">
+                    <button class="btn waves-effect waves-light light-blue darken-4 z-depth-2" type="submit" name="action" id="checkOtp" style="margin-left: 30px">Submit
+                        <i class="fa fa-fighter-jet right" aria-hidden="true"></i>
+                    </button>
+                </div>
+                <br>
+            <!--/fo<rm>-->
+        </div>
+        <input type="hidden" id="defaultOtp" value="000000">
+        <!-- Change Password Modal -->
+        <div id="passModal" class="modal"  style="weidth:600px; height: auto; padding: 20px 150px  0px 150px">
+            <h4 class="pink-text text-darken-2" style="font-size: 30px"><b>Sign Up :</b></h4>
+            <form id="changePass" method="post" class="col s12">
+                <input type="hidden" id="nemail" name="nemail" value="">
+                <div class="row">
+                    <div class="input-field col s12">
+                        <input id="newPass" type="password" class="validate" name='newPass'>
+                        <label for="newPass">New Password *</label>
+                    </div>
+                </div>
+                <div class="center">
+                    <button class="btn waves-effect waves-light light-blue darken-4 z-depth-2" type="submit" name="action" style="margin-left: 30px">Submit
+                        <i class="fa fa-fighter-jet right" aria-hidden="true"></i>
+                    </button>
+                </div>
+                <br>
+            </form>
+        </div>
         <!--        show Artists profile in cards-->
 
         <div class="container" style="padding-top: 50px; margin-bottom: 100px; height: 900px" >

@@ -46,10 +46,10 @@ public class ArtistDaoImpl implements ArtistDao{
     public int updateArtist(Artist artist) {
         Session session = HibernateUtil.getSessionFactory().openSession();
         session.beginTransaction();
-        String hql ="update Artist artist set description =: description, place =: place";
+        String hql ="update Artist artist set description =:description where artist_id =:artist_id";
         Query query = session.createQuery(hql);
         query.setParameter("description", artist.getDescription());
-        query.setParameter("place", artist.getPlace());
+        query.setParameter("artist_id", artist.getArtist_id());
         int result = query.executeUpdate();
         session.getTransaction().commit();
         session.close();
