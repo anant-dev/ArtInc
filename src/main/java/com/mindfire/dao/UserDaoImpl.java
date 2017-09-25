@@ -39,5 +39,18 @@ public class UserDaoImpl implements UserDao {
         session.getTransaction().commit();
         return user;
     }
+
+    @Override
+    public User changePass(String email, String password) {
+        Session session = HibernateUtil.getSessionFactory().openSession();                  
+        session.beginTransaction();
+        String hql = "update User user set password =:password where email =:email";
+        Query query = session.createQuery(hql);
+        query.setParameter("password", password);
+        query.setParameter("email", email);
+        User user = (User) query.uniqueResult();
+        session.getTransaction().commit();
+        return user;
+    }
     
 }

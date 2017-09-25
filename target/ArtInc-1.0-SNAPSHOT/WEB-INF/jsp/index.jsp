@@ -119,7 +119,7 @@
         <!-- SignUp Modal -->
         <div id="modal1" class="modal"  style="weidth:600px; height: auto; padding: 20px 150px  0px 150px">
             <h4 class="pink-text text-darken-2" style="font-size: 30px"><b>Sign Up :</b></h4>
-            <form id="signupForm" method="post" class="col s12">
+            <form id="signupForm" method="post" class="col s12" onsubmit="return signUpValidate()">
                 <div class="row">
                     <div class="input-field col s12">
                         <input id="name" type="text" class="validate " name='name'>
@@ -217,9 +217,12 @@
             </form>
             <br>
         </div>
+        
+        
+        
         <!-- Forget Modal -->
         <div id="forgetModal" class="modal"  style="weidth:600px; height: auto; padding: 20px 150px  0px 150px">
-            <h4 class="pink-text text-darken-2" style="font-size: 30px"><b>Sign Up :</b></h4>
+            <h4 class="pink-text text-darken-2" style="font-size: 30px"><b>Forget Password :</b></h4>
                 <div class="row">
                     <div class="input-field col s12">
                         <input id="femail" type="text" class="validate " name='femail'>
@@ -228,11 +231,11 @@
                 </div>
                 <div class="row">
                     <div class="input-field col s12">
-                        <a class="waves-effect waves-light btn" id="getOtp">Get OTP</a>
+                        <a class="btn  waves-effect waves-light light-blue darken-4 " id="getOtp">Get OTP</a>
                     </div>
                 </div>
                  
-            <form id="forgetPass" method="post" class="col s12" style="display: none">
+<!--            <form id="forgetPass" method="post" class="col s12" style="display: none">-->
                 <div class="row">
                     <div class="input-field col s12">
                         <input id="otp" type="text" class="validate" name='otp'>
@@ -240,14 +243,34 @@
                     </div>
                 </div>
                 <div class="center">
-                    <button class="btn waves-effect waves-light light-blue darken-4 z-depth-2" type="submit" name="action" id="signup" style="margin-left: 30px">SignUp
+                    <button class="btn waves-effect waves-light light-blue darken-4 z-depth-2" type="submit" name="action" id="checkOtp" style="margin-left: 30px">Submit
+                        <i class="fa fa-fighter-jet right" aria-hidden="true"></i>
+                    </button>
+                </div>
+                <br>
+            <!--/fo<rm>-->
+        </div>
+        <input type="hidden" id="defaultOtp" value="000000">
+        <!-- Change Password Modal -->
+        <div id="passModal" class="modal"  style="weidth:600px; height: auto; padding: 20px 150px  0px 150px">
+            <h4 class="pink-text text-darken-2" style="font-size: 30px"><b>Sign Up :</b></h4>
+            <form id="changePass" method="post" class="col s12">
+                <input type="hidden" id="nemail" name="nemail" value="">
+                <div class="row">
+                    <div class="input-field col s12">
+                        <input id="newPass" type="password" class="validate" name='newPass'>
+                        <label for="newPass">New Password *</label>
+                    </div>
+                </div>
+                <div class="center">
+                    <button class="btn waves-effect waves-light light-blue darken-4 z-depth-2" type="submit" name="action" style="margin-left: 30px">Submit
                         <i class="fa fa-fighter-jet right" aria-hidden="true"></i>
                     </button>
                 </div>
                 <br>
             </form>
         </div>
-
+        
         <!--Check for message-->
         <%   String msg = (String) request.getAttribute("message");
             if (msg != null) {

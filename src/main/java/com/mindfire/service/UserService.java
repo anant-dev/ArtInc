@@ -15,4 +15,6 @@ public interface UserService {
     public int saveUser(User user);
 
     public User getUser(String email);
+    
+    public User changePass(String email, String password);
 }

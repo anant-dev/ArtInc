@@ -714,23 +714,28 @@ $('#forget').click(function (event) {
     $('#loginModal').modal('close');
     $('#forgetModal').modal('open');
 });
-$('#getOtp').click(function () {
-    $("#femail").prop("disabled", false);
-    $("#getOtp").prop("disabled", false);
+$('#getOtp').click(function () { 
+    $("#femail").prop("disabled", true);
+    $("#getOtp").prop("disabled", true);
     var email = $("#femail").val();
     if(isEmail(email)){
+        $('#nemail').val(email);
         getOtpAjax(email);
     }
     
 });
-function getOtpAjax(email){   
+function getOtpAjax(email){   debugger;
     $.ajax({
         type: "GET",
-        url: "addToCart",
+        url: "getOtp",
         data: {
             email:email
         },
         success: function (data) {
+            if (data.status === "successfull") {
+                $('#defaultOtp').val(data.data);
+            }
+           
              Materialize.toast(data.message, 4000);
         },
         error: function (e) {
@@ -741,4 +746,61 @@ function getOtpAjax(email){
         }
 
     });
+}
+$('#checkOtp').click(function (event) {
+    event.preventDefault();
+    var userOtp= $('#otp').val();
+    var sysOtp=$('#defaultOtp').val();
+    
+    if(userOtp === sysOtp){
+    $('#forgetModal').modal('close');
+    $('#passModal').modal('open');
+     Materialize.toast("OTP Matched", 4000);
+    }
+    else{
+        $('#forgetModal').modal('close');
+        Materialize.toast("OTP Doesnot Match Try Later", 4000);
+    }
+});
+
+function signUpValidate() {
+    var name = document.forms["signupForm"]["name"].value;
+    var email = document.forms["signupForm"]["semail"].value;
+    var pass = document.forms["signupForm"]["spassword"].value;
+    var cnfpass = document.forms["signupForm"]["cnfpassword"].value;
+    var contact = document.forms["signupForm"]["contact"].value;
+
+    if (name === "") {
+        Materialize.toast('First Name is compulsory', 4000);
+        return false;
+    }
+    if (email === "") {
+        Materialize.toast('Email is compulsory', 4000);
+        return false;
+    }
+    if (pass === "") {
+        Materialize.toast('Password is compulsory', 4000);
+        return false;
+    }
+    if (pass.length > 12 || pass.length < 4) {
+        Materialize.toast('Password should have 4 - 12 characters', 4000);
+        return false;
+    }
+    if (cnfpass === "") {
+        Materialize.toast('Confirm Password is compulsory', 4000);
+        return false;
+    }
+
+    if (contact === "") {
+        Materialize.toast('Contact Number is compulsory', 4000);
+        return false;
+    }
+    if (contact.length !== 10 && contact !== "") {
+        Materialize.toast('Please Enter valid contact number of 10 digits', 4000);
+        return false;
+    }
+    if (pass !== cnfpass) {
+        Materialize.toast('Password and Confirm Password donot match', 4000);
+        return false;
+    }
 }

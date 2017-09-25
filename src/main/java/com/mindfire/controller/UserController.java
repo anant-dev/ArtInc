@@ -891,7 +891,29 @@ public class UserController {
          return result ;
     }
 
-
+     
+  @RequestMapping(value = "/changePass", method = RequestMethod.GET)
+    public ModelAndView changePass(String newPass, String nemail, RedirectAttributes redirect, HttpServletRequest request) {
+        User ur = userService.getUser(nemail);
+        ModelAndView model;
+        String password = BCrypt.hashpw(newPass, BCrypt.gensalt());
+        if(ur != null){
+        User user= userService.changePass(nemail, password);
+        if(user !=null){
+             HttpSession session = request.getSession();
+            session.setAttribute("user", user);
+            model = new ModelAndView("redirect:/");
+            redirect.addFlashAttribute("message", "Succusefully Changed Password");
+        } else{
+            model = new ModelAndView("redirect:/");
+            redirect.addFlashAttribute("message", "Unable to change Password Try Again Later");
+        }
+        }else{
+            model = new ModelAndView("redirect:/");
+            redirect.addFlashAttribute("message", "Unable to fetch details");
+        }
+        return model;
+    }
 //    @RequestMapping(value = "/edit", method = RequestMethod.GET)
 //    public RestWrapperDTO getEmployeeInJSON() {
 //        RestWrapperDTO wrapperDTO = new RestWrapperDTO();
