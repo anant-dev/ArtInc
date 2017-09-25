@@ -105,14 +105,12 @@ public class UserController {
     }
 
     @RequestMapping(value = "/logout")
-    public ModelAndView logout(HttpServletRequest request) {
+    public ModelAndView logout(HttpServletRequest request, RedirectAttributes redirect) {
         HttpSession session = request.getSession(false);
         session.invalidate();
-//        UserDTO result = new UserDTO();
-//        result.setCode("200");
-//        result.setMessage("Successfully Loged Out");
-//        result.setStatus("successful");
-        return new ModelAndView("redirect:/");
+        ModelAndView model = new ModelAndView("redirect:/");
+        redirect.addFlashAttribute("message", "Logout successful");
+        return model;
     }
 
     // Show By controller
@@ -143,14 +141,13 @@ public class UserController {
     }
 
     @RequestMapping("/myProfile")
-    public ModelAndView showProfile(HttpServletRequest request) {
+    public ModelAndView showProfile(HttpServletRequest request, RedirectAttributes redirect) {
         HttpSession session = request.getSession(false);
         User user = (User) session.getAttribute("user");
         ModelAndView model;
         if (user == null || user.getEmail().equals("")) {
-            model = new ModelAndView("error");
-            model.addObject("error", "No Session");
-            model.addObject("message", "Session Expired do login Again");
+            model = new ModelAndView("redirect:/");
+            redirect.addFlashAttribute("message", "Login to See your profile");
 
         } else {
             Artist ar = artistService.getArtistByUserId(user.getUser_id());
@@ -177,15 +174,13 @@ public class UserController {
     }
 
     @RequestMapping(value = "/mycart", method = RequestMethod.GET)
-    public ModelAndView getMyCart(HttpServletRequest request) {
+    public ModelAndView getMyCart(HttpServletRequest request, RedirectAttributes redirect) {
         HttpSession session = request.getSession(false);
         User user = (User) session.getAttribute("user");
         ModelAndView model;
         if (user == null || user.getEmail().equals("")) {
-            model = new ModelAndView("error");
-            model.addObject("error", "No Session");
-            model.addObject("message", "Session Expired do login Again");
-
+            model = new ModelAndView("redirect:/");
+            redirect.addFlashAttribute("message", "Login to See your cart");
         } else {
             model = new ModelAndView("cart");
         }
@@ -193,14 +188,13 @@ public class UserController {
     }
 
     @RequestMapping(value = "/myorder", method = RequestMethod.GET)
-    public ModelAndView getMyOrders(HttpServletRequest request) {
+    public ModelAndView getMyOrders(HttpServletRequest request, RedirectAttributes redirect) {
         HttpSession session = request.getSession(false);
         User user = (User) session.getAttribute("user");
         ModelAndView model;
         if (user == null || user.getEmail().equals("")) {
-            model = new ModelAndView("error");
-            model.addObject("error", "No Session");
-            model.addObject("message", "Session Expired do login Again");
+            model = new ModelAndView("redirect:/");
+            redirect.addFlashAttribute("message", "Login to See your orders");
 
         } else {
             model = new ModelAndView("order");
@@ -896,7 +890,8 @@ public class UserController {
         ModelAndView model;
         String password = BCrypt.hashpw(newPass, BCrypt.gensalt());
         if (ur != null) {
-            User user = userService.changePass(nemail, password);
+            System.out.println("user credentials"+ nemail+newPass);
+                    User user = userService.changePass(nemail, password);
             if (user != null) {
                 HttpSession session = request.getSession();
                 session.setAttribute("user", user);
