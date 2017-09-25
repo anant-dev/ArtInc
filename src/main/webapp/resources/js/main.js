@@ -10,6 +10,7 @@ $(document).ready(function () {
     $(".dropdown-button").dropdown();
     $('select').material_select();
     $('#description').trigger('autoresize');
+    $('textarea#artistDescription, textarea#description').characterCounter();
     $("img").on("contextmenu", function () {
         return false;
     });
@@ -254,6 +255,7 @@ function showProductsAjax() {
     });
 }
 function showProduct(data) {
+    $('#products').empty();
     $.each(data.plist, function (idx, obj) {
         $('#products').append('<div class="col s3">\n\
                                 <div class="card" id="' + obj.product_id + '">\n\
@@ -283,6 +285,7 @@ function actionOnImg() {
 
 
 function showErrorProduct() {
+    $('#products').empty();
     $('#products').append('<div class="container">\n\
                                         <div class="row">\n\
                                             <div class="col s4 center">\n\
@@ -305,6 +308,7 @@ function showErrorProduct() {
                                 </div>');
 }
 function showErrorArtist() {
+    $('#artists').empty();
     $('#artists').append('<div class="container">\n\
                                     <div class="card" style="padding: 50px">\n\
                                         <div class="row">\n\
@@ -330,6 +334,7 @@ function showErrorArtist() {
 }
 
 function showErrorCategory() {
+    $('#category').empty();
     $('#category').append('<div class="container">\n\
                                     <div class="card" style="padding: 50px">\n\
                                         <div class="row">\n\
@@ -378,6 +383,7 @@ function showArtistAjax() {
 }
 
 function showArtist(data) {
+    $('#artists').empty();
     $.each(data.alist, function (idx, obj) {
         $('#artists').append('<div class="col s3">\n\
                                 <div class="card" id="' + obj.artist_id + '">\n\
@@ -418,6 +424,7 @@ function showCategoryAjax() {
 }
 
 function showCategory(data) {
+    $('#category').empty();
     $.each(data.category, function (idx, obj) {
         $('#category').append('<div class="col s3">\n\
                                 <div class="card" id="' + obj.c_id + '">\n\
@@ -426,7 +433,7 @@ function showCategory(data) {
                                     </div>\n\
                                     <div class="card-content">\n\
                                         <span class="card-title">' + obj.name + '</span>\n\
-                                        <p><a href="categoryArt?caid=' + obj.c_id + '">Show Profile</a></p>\n\
+                                        <p><a href="categoryArt?caid=' + obj.c_id + '">Show Category</a></p>\n\
                                     </div>\n\
                                 </div>\n\
                             </div>');
@@ -462,6 +469,7 @@ function showProductAjax(url, id) {
     });
 }
 function showProducts(data) {
+    $('#products').empty();
     $.each(data.plist, function (idx, obj) {
         $('#products').append('<div class="col s3">\n\
                                 <div class="card" id="' + obj.product_id + '">\n\
@@ -506,6 +514,7 @@ function showArtistProductAjax(url, id) {
     });
 }
 function showArtistProducts(data) {
+    $('#products').empty();
     $.each(data.plist, function (idx, obj) {
         $('#products').append('<div class="col s3">\n\
                                 <div class="card" id="' + obj.product_id + '">\n\

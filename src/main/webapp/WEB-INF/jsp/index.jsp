@@ -303,6 +303,9 @@
                 </div>
             </div>
             <div class="row" id="products">
+                <div class="col s12 center">
+                <img src="resources/Images/loader.gif" height="100px" width="100px"/>
+                </div>
             </div>
 
         </div>

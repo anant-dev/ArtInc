@@ -90,7 +90,7 @@
 
             <div class="row">
                 <div class="  col s12">
-                    <label><a href="signup.html">Forget Password ?</a></label>
+                    <label><a id="forget">Forget Password ?</a></label>
                 </div>
 
             </div><br>

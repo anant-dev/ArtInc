@@ -10,10 +10,10 @@
 <!DOCTYPE html>
 <html>
     <head>
-    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/css/materialize.min.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-    <link rel="stylesheet" href="resources/css/style.css">
+        <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/css/materialize.min.css">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+        <link rel="stylesheet" href="resources/css/style.css">
     </head>
     <body>
         <!--Navbar starts here-->
@@ -90,7 +90,7 @@
 
             <div class="row">
                 <div class="  col s12">
-                    <label><a href="signup.html">Forget Password ?</a></label>
+                    <label><a id="forget">Forget Password ?</a></label>
                 </div>
 
             </div><br>
@@ -169,7 +169,7 @@
                 <br>
             </form>
         </div>
-        
+
         <!-- add Artist Profile Modal Starts here-->
         <div id="artist" class="modal"  style="weidth:600px; height: auto; padding: 20px 150px  0px 150px">
             <h4 class="pink-text text-darken-2" style="font-size: 30px"><b>Artist Data  :</b></h4>
@@ -186,7 +186,7 @@
                         <label for="place">Place *</label>
                     </div>
                 </div>
-                
+
                 <div class="row">
                     <div class="input-field col s12">
                         <input type="file" style="display: none" id="profilePic" name="profilePic" required="required">
@@ -204,35 +204,35 @@
             </form>
             <br>
         </div>
-         <!-- add Artist Profile Ends here -->
-           <!-- Forget Modal -->
+        <!-- add Artist Profile Ends here -->
+        <!-- Forget Modal -->
         <div id="forgetModal" class="modal"  style="weidth:600px; height: auto; padding: 20px 150px  0px 150px">
             <h4 class="pink-text text-darken-2" style="font-size: 30px"><b>Forget Password :</b></h4>
-                <div class="row">
-                    <div class="input-field col s12">
-                        <input id="femail" type="text" class="validate " name='femail'>
-                        <label for="femail">Email *</label>
-                    </div>
+            <div class="row">
+                <div class="input-field col s12">
+                    <input id="femail" type="text" class="validate " name='femail'>
+                    <label for="femail">Email *</label>
                 </div>
-                <div class="row">
-                    <div class="input-field col s12">
-                        <a class="btn  waves-effect waves-light light-blue darken-4 " id="getOtp">Get OTP</a>
-                    </div>
+            </div>
+            <div class="row">
+                <div class="input-field col s12">
+                    <a class="btn  waves-effect waves-light light-blue darken-4 " id="getOtp">Get OTP</a>
                 </div>
-                 
-<!--            <form id="forgetPass" method="post" class="col s12" style="display: none">-->
-                <div class="row">
-                    <div class="input-field col s12">
-                        <input id="otp" type="text" class="validate" name='otp'>
-                        <label for="otp">Enter the OTP *</label>
-                    </div>
+            </div>
+
+            <!--            <form id="forgetPass" method="post" class="col s12" style="display: none">-->
+            <div class="row">
+                <div class="input-field col s12">
+                    <input id="otp" type="text" class="validate" name='otp'>
+                    <label for="otp">Enter the OTP *</label>
                 </div>
-                <div class="center">
-                    <button class="btn waves-effect waves-light light-blue darken-4 z-depth-2" type="submit" name="action" id="checkOtp" style="margin-left: 30px">Submit
-                        <i class="fa fa-fighter-jet right" aria-hidden="true"></i>
-                    </button>
-                </div>
-                <br>
+            </div>
+            <div class="center">
+                <button class="btn waves-effect waves-light light-blue darken-4 z-depth-2" type="submit" name="action" id="checkOtp" style="margin-left: 30px">Submit
+                    <i class="fa fa-fighter-jet right" aria-hidden="true"></i>
+                </button>
+            </div>
+            <br>
             <!--/fo<rm>-->
         </div>
         <input type="hidden" id="defaultOtp" value="000000">
@@ -258,8 +258,11 @@
         <!--        show Artists profile in cards-->
 
         <div class="container" style="padding-top: 50px; margin-bottom: 100px; min-height: 400px" >
-             <h4 class="center indigo-text text-darken-4"><b>Categories</b></h4>
+            <h4 class="center indigo-text text-darken-4"><b>Categories</b></h4>
             <div class="row" id="category">
+                <div class="col s12 center">
+                    <img src="resources/Images/loader.gif" height="100px" width="100px"/>
+                </div>
             </div>
         </div>
 

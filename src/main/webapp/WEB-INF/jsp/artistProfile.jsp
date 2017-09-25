@@ -70,7 +70,7 @@
                 </div>
                 <div class="row">
                     <div class="input-field col s12">
-                        <input id="description" type="text" class="validate " name='description'>
+                        <input id="description" type="text" class="validate " name='description'  maxlength="300" data-length="300">
                         <label for="description">Description *</label>
                     </div>
                 </div>
@@ -157,9 +157,10 @@
 
                             <span class="card-title "><h4 class="indigo-text text-darken-4 center"><b><%=  artist.getArtist_name()%></b></h4></span>
                             <span><p class="indigo-text text-darken-4 " style="font-size: 20px;"><b>Description :</b></p></span>
-                            <textarea id="artistDescription" class="materialize-textarea" style="font-size: 18px; min-height: 120px" maxlength="300" disabled> <%=artist.getDescription()%></textarea>
-                            <br>
-                            <h5 class="indigo-text text-darken-4 center" style="font-size: 22px;"><b>Place :</b>  <%=artist.getPlace()%></h5>
+                            <div>
+                                <textarea id="artistDescription" class="materialize-textarea" style="font-size: 18px; min-height: 120px" maxlength="300" data-length="300" disabled> <%=artist.getDescription()%></textarea>
+                            </div>
+                            <h5 class="indigo-text text-darken-4 center" style="font-size: 22px; margin-top: 50px"><b>Place :</b>  <%=artist.getPlace()%></h5>
                             <h5 class="indigo-text text-darken-4 center" style="font-size: 22px;"><b>Number of Works : </b><%= artist.getNumb_img()%></h5>
                         </div>
                     </div>
@@ -172,6 +173,9 @@
                     <h4 class=" indigo-text text-darken-4 center" style="padding-top: 20px"> <b>Artist Works </b></h4>           
 
                     <div class="row" id="products" style="margin: 20px">
+                        <div class="col s12 center">
+                            <img src="resources/Images/loader.gif" height="100px" width="100px"/>
+                        </div>
                     </div>
                 </div>
             </div>

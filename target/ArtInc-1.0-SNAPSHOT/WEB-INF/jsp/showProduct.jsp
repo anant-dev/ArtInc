@@ -92,7 +92,7 @@
 
             <div class="row">
                 <div class="  col s12">
-                    <label><a href="signup.html">Forget Password ?</a></label>
+                    <label><a id="forget">Forget Password ?</a></label>
                 </div>
 
             </div><br>
@@ -207,34 +207,34 @@
             <br>
         </div>
         <!-- add Artist Profile Ends here -->
-          <!-- Forget Modal -->
+        <!-- Forget Modal -->
         <div id="forgetModal" class="modal"  style="weidth:600px; height: auto; padding: 20px 150px  0px 150px">
             <h4 class="pink-text text-darken-2" style="font-size: 30px"><b>Forget Password :</b></h4>
-                <div class="row">
-                    <div class="input-field col s12">
-                        <input id="femail" type="text" class="validate " name='femail'>
-                        <label for="femail">Email *</label>
-                    </div>
+            <div class="row">
+                <div class="input-field col s12">
+                    <input id="femail" type="text" class="validate " name='femail'>
+                    <label for="femail">Email *</label>
                 </div>
-                <div class="row">
-                    <div class="input-field col s12">
-                        <a class="btn  waves-effect waves-light light-blue darken-4 " id="getOtp">Get OTP</a>
-                    </div>
+            </div>
+            <div class="row">
+                <div class="input-field col s12">
+                    <a class="btn  waves-effect waves-light light-blue darken-4 " id="getOtp">Get OTP</a>
                 </div>
-                 
-<!--            <form id="forgetPass" method="post" class="col s12" style="display: none">-->
-                <div class="row">
-                    <div class="input-field col s12">
-                        <input id="otp" type="text" class="validate" name='otp'>
-                        <label for="otp">Enter the OTP *</label>
-                    </div>
+            </div>
+
+            <!--            <form id="forgetPass" method="post" class="col s12" style="display: none">-->
+            <div class="row">
+                <div class="input-field col s12">
+                    <input id="otp" type="text" class="validate" name='otp'>
+                    <label for="otp">Enter the OTP *</label>
                 </div>
-                <div class="center">
-                    <button class="btn waves-effect waves-light light-blue darken-4 z-depth-2" type="submit" name="action" id="checkOtp" style="margin-left: 30px">Submit
-                        <i class="fa fa-fighter-jet right" aria-hidden="true"></i>
-                    </button>
-                </div>
-                <br>
+            </div>
+            <div class="center">
+                <button class="btn waves-effect waves-light light-blue darken-4 z-depth-2" type="submit" name="action" id="checkOtp" style="margin-left: 30px">Submit
+                    <i class="fa fa-fighter-jet right" aria-hidden="true"></i>
+                </button>
+            </div>
+            <br>
             <!--/fo<rm>-->
         </div>
         <input type="hidden" id="defaultOtp" value="000000">
@@ -320,10 +320,13 @@
                                 <h4 class=" indigo-text text-darken-4 center" style="padding-top: 20px"> <b>Extra Large Size Art</b></h4>
                                 <% } else {%>
                                 <h4 class=" indigo-text text-darken-4 center" style="padding-top: 20px"> <b>Bad Request</b></h4>
-                                
+
                                 <% } }%>
 
                                 <div class="row" id="products" style="margin: 20px; min-height: 400px">
+                                    <div class="col s12 center">
+                                        <img src="resources/Images/loader.gif" height="100px" width="100px"/>
+                                    </div>
                                 </div>
                             </div>
                         </div>
