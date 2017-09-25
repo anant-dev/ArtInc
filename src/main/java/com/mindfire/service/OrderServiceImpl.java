@@ -7,6 +7,7 @@ package com.mindfire.service;
 
 import com.mindfire.dao.OrderDao;
 import com.mindfire.model.Order;
+import java.util.Date;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -36,8 +37,8 @@ public class OrderServiceImpl implements OrderService{
     }
 
     @Override
-    public int updateOrder(int order_id, int status) {
-        return orderDao.updateOrder(order_id, status);
+    public int updateOrder(int order_id, int status, String date) {
+        return orderDao.updateOrder(order_id, status, date);
     }
 
 }

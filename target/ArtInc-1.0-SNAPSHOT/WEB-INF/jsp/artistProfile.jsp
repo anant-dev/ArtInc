@@ -132,53 +132,53 @@
             </form>
             <br>
         </div>
+        <div style="min-height: 700px">
+            <input type="hidden" id="artisId" value="<%=artist.getArtist_id()%>">
+            <div class="row container">
+                <div class="col s12 m4 l4 center">
+                    <div class="card z-depth-5">
+                        <div class="card-image ">
+                            <img id="profilePic" src="<%=artist.getProfile_pic()%>" height="400px">
+                            <form method="post" enctype="multipart/form-data" id="picUploadForm">  
+                                <input type="file" style="display: none" id="uploadFile" name="uploadFile">
+                            </form>
+                            <a id="uploadPic" name="uploadPic" title="Upload Your Profile Picture" class="indigo darken-4 left btn-floating btn-large halfway-fab z-depth-5"><i class="material-icons">file_upload</i></a>
 
-        <input type="hidden" id="artisId" value="<%=artist.getArtist_id()%>">
-        <div class="row container">
-            <div class="col s12 m4 l4 center">
-                <div class="card z-depth-5">
-                    <div class="card-image ">
-                        <img id="profilePic" src="<%=artist.getProfile_pic()%>" height="400px">
-                        <form method="post" enctype="multipart/form-data" id="picUploadForm">  
-                            <input type="file" style="display: none" id="uploadFile" name="uploadFile">
-                        </form>
-                        <a id="uploadPic" name="uploadPic" title="Upload Your Profile Picture" class="indigo darken-4 left btn-floating btn-large halfway-fab z-depth-5"><i class="material-icons">file_upload</i></a>
+                        </div>
+                    </div>
+                </div>
 
+
+                <div class="col s12 m8 l8">
+                    <div class="card" style="min-height: 400px">
+                        <div class="card-content about">
+                            <a id="editProfile" name="editProfile" title="edit Profile" class="indigo darken-4 right btn-floating btn-large halfway-fab z-depth-5"><i class="material-icons">mode_edit</i></a>
+                            <a id="editProfile" name="editProfile" title="edit Profile" class="indigo darken-4 right btn-floating btn-large halfway-fab z-depth-5" style="display:none"><i class="material-icons">save</i></a>
+
+                            <span class="card-title "><h4 class="indigo-text text-darken-4 center"><b><%=  artist.getArtist_name()%></b></h4></span>
+                            <span><p class="indigo-text text-darken-4 " style="font-size: 20px;"><b>Description :</b></p></span>
+                            <textarea id="description" class="materialize-textarea" style="font-size: 18px; min-height: 120px" maxlength="300" disabled> <%=artist.getDescription()%></textarea>
+                            <br>
+                            <h5 class="indigo-text text-darken-4 center" style="font-size: 22px;"><b>Place :</b>  <%=artist.getPlace()%></h5>
+                            <h5 class="indigo-text text-darken-4 center" style="font-size: 22px;"><b>Number of Works : </b><%= artist.getNumb_img()%></h5>
+                        </div>
                     </div>
                 </div>
             </div>
 
 
-            <div class="col s12 m8 l8">
-                <div class="card" style="min-height: 400px">
-                    <div class="card-content about">
-                        <a id="editProfile" name="editProfile" title="edit Profile" class="indigo darken-4 right btn-floating btn-large halfway-fab z-depth-5"><i class="material-icons">mode_edit</i></a>
-                        <a id="editProfile" name="editProfile" title="edit Profile" class="indigo darken-4 right btn-floating btn-large halfway-fab z-depth-5" style="display:none"><i class="material-icons">save</i></a>
-                        
-                        <span class="card-title "><h4 class="indigo-text text-darken-4 center"><b><%=  artist.getArtist_name()%></b></h4></span>
-                        <span><p class="indigo-text text-darken-4 " style="font-size: 20px;"><b>Description :</b></p></span>
-                        <textarea id="description" class="materialize-textarea" style="font-size: 18px; min-height: 120px" maxlength="300" disabled> <%=artist.getDescription()%></textarea>
-                        <br>
-                        <h5 class="indigo-text text-darken-4 center" style="font-size: 22px;"><b>Place :</b>  <%=artist.getPlace()%></h5>
-                        <h5 class="indigo-text text-darken-4 center" style="font-size: 22px;"><b>Number of Works : </b><%= artist.getNumb_img()%></h5>
+            <div class="container">
+                <div class="card z-depth-3" >
+                    <h4 class=" indigo-text text-darken-4 center" style="padding-top: 20px"> <b>Artist Works </b></h4>           
+
+                    <div class="row" id="products" style="margin: 20px">
                     </div>
                 </div>
             </div>
+
+
+
         </div>
-
-
-        <div class="container">
-            <div class="card z-depth-3" >
-                <h4 class=" indigo-text text-darken-4 center" style="padding-top: 20px"> <b>Artist Works </b></h4>           
-
-                <div class="row" id="products" style="margin: 20px">
-                </div>
-            </div>
-        </div>
-
-
-
-
 
 
 

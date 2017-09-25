@@ -6,6 +6,7 @@
 package com.mindfire.service;
 
 import com.mindfire.model.Order;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -20,5 +21,5 @@ public interface OrderService {
     
     public int deleteOrder(int order_id);
     
-    public int updateOrder(int order_id,int status);
+    public int updateOrder(int order_id,int status, String date);
 }

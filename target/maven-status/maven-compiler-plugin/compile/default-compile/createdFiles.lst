@@ -1,4 +1,5 @@
 com\mindfire\config\WebConfig.class
+com\mindfire\util\Sort$4.class
 com\mindfire\DTO\CategoryDTO.class
 com\mindfire\DTO\OrderDTO.class
 com\mindfire\service\UserService.class
@@ -19,6 +20,7 @@ com\mindfire\service\OrderService.class
 com\mindfire\dao\ProductDao.class
 com\mindfire\service\CategoryService.class
 com\mindfire\DTO\MyCartDTO.class
+com\mindfire\util\Sort$2.class
 com\mindfire\util\MailUtil.class
 com\mindfire\dao\OrderDaoImpl.class
 com\mindfire\util\HibernateUtil.class
@@ -26,14 +28,18 @@ com\mindfire\config\WebInitializer.class
 com\mindfire\dao\ArtistDao.class
 com\mindfire\service\OrderServiceImpl.class
 com\mindfire\DTO\ProductDTO.class
+com\mindfire\util\Sort$5.class
 com\mindfire\dao\ProductDaoImpl.class
 com\mindfire\service\ArtistServiceImpl.class
 com\mindfire\DTO\OrderListDTO.class
+com\mindfire\util\Sort$3.class
 com\mindfire\dao\CategoryDaoImpl.class
 com\mindfire\DTO\DataDTO.class
 com\mindfire\service\UserServiceImpl.class
 com\mindfire\dao\OrderDao.class
+com\mindfire\util\Sort$1.class
 com\mindfire\dao\CategoryDao.class
+com\mindfire\util\Sort.class
 com\mindfire\service\CategoryServiceImpl.class
 com\mindfire\service\ArtistService.class
 com\mindfire\model\Order.class

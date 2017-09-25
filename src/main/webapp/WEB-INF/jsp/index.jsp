@@ -92,7 +92,7 @@
 
             <div class="row">
                 <div class="  col s12">
-                    <label><a href="signup.html">Forget Password ?</a></label>
+                    <label><a id="forget">Forget Password ?</a></label>
                 </div>
 
             </div><br>
@@ -182,10 +182,10 @@
                 <br>
             </form>
         </div>
-        
+
         <!-- add Artist Profile Modal Starts here-->
         <div id="artist" class="modal"  style="weidth:600px; height: auto; padding: 20px 150px  0px 150px">
-            <h4 class="pink-text text-darken-2" style="font-size: 30px"><b>Add Painting :</b></h4>
+            <h4 class="pink-text text-darken-2" style="font-size: 30px"><b>Artist Data  :</b></h4>
             <form enctype="multipart/form-data" action="signupArtist" method="post">
                 <div class="row">
                     <div class="input-field col s12">
@@ -199,7 +199,7 @@
                         <label for="place">Place *</label>
                     </div>
                 </div>
-                
+
                 <div class="row">
                     <div class="input-field col s12">
                         <input type="file" style="display: none" id="profilePic" name="profilePic" required="required">
@@ -217,9 +217,68 @@
             </form>
             <br>
         </div>
-         <!-- add Artist Profile Ends here -->
-         
-        <div class="container" style="padding-top: 50px;margin-bottom: 100px; height: 900px" >
+        <!-- Forget Modal -->
+        <div id="forgetModal" class="modal"  style="weidth:600px; height: auto; padding: 20px 150px  0px 150px">
+            <h4 class="pink-text text-darken-2" style="font-size: 30px"><b>Sign Up :</b></h4>
+                <div class="row">
+                    <div class="input-field col s12">
+                        <input id="femail" type="text" class="validate " name='femail'>
+                        <label for="femail">Email *</label>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="input-field col s12">
+                        <a class="waves-effect waves-light btn" id="getOtp">Get OTP</a>
+                    </div>
+                </div>
+                 
+            <form id="forgetPass" method="post" class="col s12" style="display: none">
+                <div class="row">
+                    <div class="input-field col s12">
+                        <input id="otp" type="text" class="validate" name='otp'>
+                        <label for="otp">Enter the OTP *</label>
+                    </div>
+                </div>
+                <div class="center">
+                    <button class="btn waves-effect waves-light light-blue darken-4 z-depth-2" type="submit" name="action" id="signup" style="margin-left: 30px">SignUp
+                        <i class="fa fa-fighter-jet right" aria-hidden="true"></i>
+                    </button>
+                </div>
+                <br>
+            </form>
+        </div>
+
+        <!--Check for message-->
+        <%   String msg = (String) request.getAttribute("message");
+            if (msg != null) {
+        %>
+        <input type="hidden" id="status" value="1">
+        <input type="hidden" id="message" value="<%= msg%>">
+        <% } else {
+        %>
+        <input type="hidden" id="status" value="0">
+        <% }
+        %>
+
+        <!-- add Artist Profile Ends here -->
+
+        <div class="container" style="padding-top: 50px; margin-bottom: 100px;min-height: 400px" >
+            <div class="row">
+                <div class="col s7">
+                    <h4 class="right indigo-text text-darken-4"><b>Products</b></h4>
+                </div>
+                <!--Sort by various type-->
+                <div class="input-field col s3 offset-s2">
+                    <select id="sortBy" class="right indigo-text text-darken-4">
+                        <option value="" disabled selected> Sort By </option>
+                        <option value="1">Popularity</option>
+                        <option value="2">Name A - Z</option>
+                        <option value="3">Name Z - A</option>
+                        <option value="4">Price Low to High</option>
+                        <option value="5">Price High to Low</option>
+                    </select>
+                </div>
+            </div>
             <div class="row" id="products">
             </div>
 
@@ -241,6 +300,10 @@
         <script src="resources/js/main.js"></script>
         <script>
             $(document).ready(function () {
+                var status = $('#status').val();
+                if (status === "1") {
+                    Materialize.toast($('#message').val(), 4000);
+                }
                 showProductsAjax();
             });
         </script>

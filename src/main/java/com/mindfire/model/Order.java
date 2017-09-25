@@ -6,6 +6,7 @@
 package com.mindfire.model;
 
 import java.io.Serializable;
+import java.util.Date;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -27,6 +28,7 @@ public class Order implements Serializable{
     private int user_id;
     private int product_id;
     private int status;
+    private String date;
     
 
     public int getOrder_id() {
@@ -61,5 +63,13 @@ public class Order implements Serializable{
         this.status = status;
     }
 
-    
+    public String getDate() {
+        return date;
+    }
+
+    public void setDate(String date) {
+        this.date = date;
+    }
+
+  
 }

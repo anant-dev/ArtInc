@@ -8,6 +8,7 @@ package com.mindfire.dao;
 import com.mindfire.model.Order;
 import com.mindfire.model.Product;
 import com.mindfire.util.HibernateUtil;
+import java.util.Date;
 import java.util.List;
 import org.hibernate.Query;
 import org.hibernate.Session;
@@ -58,12 +59,13 @@ public class OrderDaoImpl implements OrderDao {
     }
 
     @Override
-    public int updateOrder(int order_id, int status) {
+    public int updateOrder(int order_id, int status, String date) {
         Session session = HibernateUtil.getSessionFactory().openSession();
         session.beginTransaction();
-        String hql = "update Order set status =:status where order_id =:order_id";
+        String hql = "update Order set status =:status , date=:date where order_id =:order_id";
         Query query = session.createQuery(hql);
         query.setParameter("status", status);
+        query.setParameter("date", date);
         query.setParameter("order_id", order_id);
         int s = query.executeUpdate();
         session.getTransaction().commit();

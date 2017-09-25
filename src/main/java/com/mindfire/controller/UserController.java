@@ -26,6 +26,7 @@ import com.mindfire.service.OrderService;
 import com.mindfire.service.ProductService;
 import com.mindfire.service.UserService;
 import com.mindfire.util.MailUtil;
+import com.mindfire.util.Sort;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -36,7 +37,12 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Collections;
+import java.util.Date;
 import java.util.Properties;
+import java.util.Random;
 import javax.mail.PasswordAuthentication;
 import javax.mail.Session;
 import javax.servlet.http.HttpServletRequest;
@@ -60,6 +66,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.commons.CommonsMultipartFile;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 /**
  *
@@ -82,10 +89,15 @@ public class UserController {
 
     @Autowired
     CategoryService categoryService;
+    
 
     @RequestMapping("/")
-    public ModelAndView showIndex() {
-        return new ModelAndView("index");
+    public ModelAndView showIndex(@ModelAttribute("message") String msg) {
+        ModelAndView model = new ModelAndView("index");
+        if (!msg.equals("")) {
+            model.addObject("message", msg);
+        }
+        return model;
     }
 
     @RequestMapping("/home")
@@ -155,6 +167,7 @@ public class UserController {
 
     }
 
+    // redirecting to show product where product loaded using ajax by size
     @RequestMapping(value = "/sizeArt", method = RequestMethod.GET)
     public ModelAndView showSize(HttpServletRequest request) {
         int sid = Integer.parseInt(request.getParameter("sid"));
@@ -229,19 +242,27 @@ public class UserController {
         //encrypting password using bcrypt
         String pass = BCrypt.hashpw(user.getPassword(), BCrypt.gensalt());
         user.setPassword(pass);
-        int status = userService.saveUser(user);
+        User ur = userService.getUser(user.getEmail());
+        int status = 0;
         UserDTO result = new UserDTO();
-        if (status >= 1) {
-            HttpSession session = request.getSession();
-            session.setAttribute("user", user);
-            result.setCode("200");
-            result.setMessage("User Profile Created ....!");
-            result.setStatus("successful");
-            result.setUser(user);
+        if (ur != null) {
+            status = userService.saveUser(user);
+            if (status != 0) {
+                HttpSession session = request.getSession();
+                session.setAttribute("user", user);
+                result.setCode("200");
+                result.setMessage("User Profile Created ....!");
+                result.setStatus("successful");
+                result.setUser(user);
+            } else {
+                result.setCode("400");
+                result.setStatus("unsuccessful");
+                result.setMessage("There was a problem Try Again Later");
+            }
         } else {
             result.setCode("400");
-            result.setStatus("unsuccessfull");
-            result.setMessage("There was a problem Try Again Later");
+            result.setStatus("unsuccessful");
+            result.setMessage("This email id already exists");
         }
         return result;
     }
@@ -335,12 +356,25 @@ public class UserController {
     @RequestMapping(value = "/productBySize", method = RequestMethod.GET)
     public ProductListDTO getProductBySize(String id) {
         int size = Integer.parseInt(id);
-        List<Product> plist = (List<Product>) productService.getProductBySize(size);
         ProductListDTO result = new ProductListDTO();
-        result.setCode("200");
-        result.setStatus("successfull");
-        result.setPlist(plist);
-        result.setMessage("product reciecved");
+
+        if (size > 0 && size < 5) {
+            List<Product> plist = (List<Product>) productService.getProductBySize(size);
+            if (!plist.isEmpty()) {
+                result.setCode("200");
+                result.setStatus("successfull");
+                result.setPlist(plist);
+                result.setMessage("product reciecved");
+            } else {
+                result.setCode("404");
+                result.setStatus("successfull");
+                result.setMessage("No Product Exist");
+            }
+        } else {
+            result.setCode("400");
+            result.setStatus("unsuccessful");
+            result.setMessage("Bad Request : No product of this type exists");
+        }
         return result;
     }
 
@@ -396,8 +430,9 @@ public class UserController {
         return result;
     }
 
+    //product details based on product ID
     @RequestMapping(value = "/productDetails", method = RequestMethod.GET)
-    public ModelAndView productDetails(HttpServletRequest request) {
+    public ModelAndView productDetails(HttpServletRequest request, RedirectAttributes redirect) {
         int pid = Integer.parseInt(request.getParameter("pid"));
         Product product = productService.getProductById(pid);
         ModelAndView model;
@@ -423,8 +458,9 @@ public class UserController {
             }
             model.addObject("size", s);
         } else {
+
             model = new ModelAndView("redirect:/");
-            model.addObject("message", "product Not Found");
+            redirect.addFlashAttribute("message", "Product Not Found");
         }
         return model;
     }
@@ -589,21 +625,28 @@ public class UserController {
         int status = 0;
         HttpSession session = request.getSession(false);
         User user = (User) session.getAttribute("user");
-        Order order = new Order();
-        order.setProduct_id(p_id);
-        order.setUser_id(user.getUser_id());
-        order.setStatus(0);
-        status = orderService.saveOrder(order);
         DataDTO result = new DataDTO();
-        if (status == 0) {
-            result.setCode("400");
-            result.setStatus("unsuccessfull");
-            result.setMessage("Something went wrong Try Again Later");
+        if (user != null) {
+            Order order = new Order();
+            order.setProduct_id(p_id);
+            order.setUser_id(user.getUser_id());
+            order.setStatus(0);
+            status = orderService.saveOrder(order);
+            if (status == 0) {
+                result.setCode("400");
+                result.setStatus("unsuccessfull");
+                result.setMessage("Something went wrong Try Again Later");
+            } else {
+                result.setCode("200");
+                result.setStatus("successfull");
+                result.setMessage("Item Added to Cart");
+            }
         } else {
             result.setCode("200");
-            result.setStatus("successfull");
-            result.setMessage("Item Added to Cart");
+            result.setStatus("unsuccessful");
+            result.setMessage("Please Login to Add to Cart");
         }
+
         return result;
     }
 
@@ -725,6 +768,40 @@ public class UserController {
         return model;
     }
 
+    @RequestMapping(value = "/sortProduct", method = RequestMethod.GET)
+    public ProductListDTO sortProduct(int sortid) {
+        List<Product> plist = (List<Product>) productService.getProduct();
+        ProductListDTO result = new ProductListDTO();
+        if (!plist.isEmpty()) {
+            result.setCode("200");
+            result.setStatus("successfull");
+            if (sortid == 1) {
+                Collections.sort(plist, Sort.ByPopularity);
+                result.setMessage("Product Sorted By Popularity");
+            } else if (sortid == 2) {
+                Collections.sort(plist, Sort.ByNameAZ);
+                result.setMessage("Product Sorted By Name A-Z");
+            } else if (sortid == 3) {
+                Collections.sort(plist, Sort.ByNameZA);
+                result.setMessage("Product Sorted By Name Z-A");
+            } else if (sortid == 4) {
+                Collections.sort(plist, Sort.ByPriceLH);
+                result.setMessage("Product Sorted By Price Low to High");
+            } else if (sortid == 5) {
+                Collections.sort(plist, Sort.ByPriceHL);
+                result.setMessage("Product Sorted By Price High to Low");
+            } else {
+                result.setMessage("Unable to Sort Product Please try later .. ");
+            }
+            result.setPlist(plist);
+        } else {
+            result.setCode("200");
+            result.setStatus("unsuccessfull");
+            result.setMessage("Products not Recieved");
+        }
+        return result;
+    }
+
     /*----------------------------------------- Artist Edit Controllers ends ------------------------------------------------------ */
     @RequestMapping(value = "/checkout", method = RequestMethod.GET)
     public ModelAndView sendMail(HttpServletRequest request) {
@@ -737,12 +814,16 @@ public class UserController {
         } else {
             List<Order> olist = orderService.getOrder(user.getUser_id(), 0);
             List<String> attachments = new ArrayList<>();
+            DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            Date date = new Date();
+            String d = dateFormat.format(date);
+
             for (Order od : olist) {
                 Product product = productService.getProductById(od.getProduct_id());
                 int count = Integer.parseInt(product.getNumb_sold());
                 count++;
                 attachments.add(product.getLocation());
-                orderService.updateOrder(od.getOrder_id(), 1);
+                orderService.updateOrder(od.getOrder_id(), 1, d);
                 productService.increaseCount(product.getProduct_id(), Integer.toString(count));
             }
 
@@ -771,6 +852,45 @@ public class UserController {
 
         //update order table and increase count of sold painting
     }
+
+    @RequestMapping(value = "/getOtp", method = RequestMethod.GET)
+    public DataDTO forgotMailPassword(String email, HttpServletRequest request) {
+
+        DataDTO result = new DataDTO();
+        User user = userService.getUser(email);
+        final String username = "artincofficial";
+        final String password = "mindfire";
+        if (user == null) {
+            result.setCode("200");
+            result.setStatus("unsuccessfull");
+            result.setMessage("User does not exist");
+        } else {
+            int otp = (int) (100000 + new Random().nextDouble() * 900000);
+             String host = "smtp.gmail.com";
+            Properties props = new Properties();
+            props.put("mail.smtp.auth", "true");
+            props.put("mail.smtp.starttls.enable", "true");
+            props.put("mail.smtp.host", host);
+            props.put("mail.smtp.port", "587");
+            props.put("mail.user", "anants@mindfiresolutions.com");
+            props.put("mail.password", password);
+            // set the session object
+            Session s = Session.getInstance(props,
+                    new javax.mail.Authenticator() {
+                public PasswordAuthentication getPasswordAuthentication() {
+                    return new PasswordAuthentication(username, password);
+                }
+            });
+            MailUtil.sendAttachmentEmail(s, email, "Reset Password Initiated",
+                    "The 6 digit OTP to change your Password is - "+otp+"  . Visit the website and enter the OTP to change the password", null);
+            result.setCode("200");
+            result.setStatus("successfull");
+            result.setMessage("OTP Successfully Send");
+            result.setData(Integer.toString(otp));
+        }
+         return result ;
+    }
+
 
 //    @RequestMapping(value = "/edit", method = RequestMethod.GET)
 //    public RestWrapperDTO getEmployeeInJSON() {

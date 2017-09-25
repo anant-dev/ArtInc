@@ -171,10 +171,10 @@
                 <br>
             </form>
         </div>
-        
+
         <!-- add Artist Profile Modal Starts here-->
         <div id="artist" class="modal"  style="weidth:600px; height: auto; padding: 20px 150px  0px 150px">
-            <h4 class="pink-text text-darken-2" style="font-size: 30px"><b>Add Painting :</b></h4>
+            <h4 class="pink-text text-darken-2" style="font-size: 30px"><b>Artist Data  :</b></h4>
             <form enctype="multipart/form-data" action="signupArtist" method="post">
                 <div class="row">
                     <div class="input-field col s12">
@@ -188,7 +188,7 @@
                         <label for="place">Place *</label>
                     </div>
                 </div>
-                
+
                 <div class="row">
                     <div class="input-field col s12">
                         <input type="file" style="display: none" id="profilePic" name="profilePic" required="required">
@@ -206,7 +206,7 @@
             </form>
             <br>
         </div>
-         <!-- add Artist Profile Ends here -->
+        <!-- add Artist Profile Ends here -->
         <!--        show Artists profile in cards-->
         <% String type = (String) request.getAttribute("type");
             System.out.println("type" + type);%>   
@@ -244,56 +244,58 @@
         </div>
         <input type="hidden" id="parameter" value="<%=artist.getArtist_id()%>">
         <div class="container" style="padding-top: 50px; margin-bottom: 100px; min-height: 400px " >
-             <div class="card z-depth-3" >
-            <h4 class=" indigo-text text-darken-4 center" style="padding-top: 20px"> <b>Artist Works </b></h4>
-            <% } else if (type.equals("productByCategory")) {
-                Category category = (Category) request.getAttribute("category");
-                System.out.println("category");
-            %>
-            <input type="hidden" id="parameter" value="<%=category.getC_id()%>">
-            <div class="container" style="padding-top: 50px; margin-bottom: 100px; height: 900px" >
-                 <div class="card z-depth-3" >
-                <h4 class=" indigo-text text-darken-4 center" style="padding-top: 20px"> <b>Category : <%=category.getName()%> </b></h4>
-                <% } else {
-                    System.out.println("size" + request.getAttribute("size"));
-                    int size = 1;%>
-                <input type="hidden" id="parameter" value="<%=size%>">
-                <div class="container" style="padding-top: 50px; margin-bottom: 100px; height: 900px" >
-                     <div class="card z-depth-3" >
-                    <% if (size == 1) {%>
-                    <h4 class=" indigo-text text-darken-4 center" style="padding-top: 20px"> <b>Small Size Art</b></h4>
-                    <%    } else if (size == 2) {
-                    %><h4 class=" indigo-text text-darken-4 center" style="padding-top: 20px"> <b>Medium Size Art</b></h4>
-                    <%    } else if (size == 2) {
-                    %><h4 class=" indigo-text text-darken-4 center" style="padding-top: 20px"> <b>Large Size Art</b></h4>
-                    <%    } else {%>
-                    <h4 class=" indigo-text text-darken-4 center" style="padding-top: 20px"> <b>Xtra Large Size Art</b></h4>
-                    <% }
-                        }%>
-                   
-                        <div class="row" id="products" style="margin: 20px">
+            <div class="card z-depth-3" >
+                <h4 class=" indigo-text text-darken-4 center" style="padding-top: 20px"> <b>Artist Works </b></h4>
+                <% } else if (type.equals("productByCategory")) {
+                    Category category = (Category) request.getAttribute("category");
+                    System.out.println("category");
+                %>
+                <input type="hidden" id="parameter" value="<%=category.getC_id()%>">
+                <div class="container" style="padding-top: 50px; margin-bottom: 100px; min-height: 400px" >
+                    <div class="card z-depth-3" >
+                        <h4 class=" indigo-text text-darken-4 center" style="padding-top: 20px"> <b>Category : <%=category.getName()%> </b></h4>
+                        <% } else {
+                            System.out.println("size" + request.getAttribute("size"));
+                            int size = (int) request.getAttribute("size");%>
+                        <input type="hidden" id="parameter" value="<%=size%>">
+                        <div class="container" style="padding-top: 50px; margin-bottom: 100px; min-height: 400px" >
+                            <div class="card z-depth-3" >
+                                <% if (size == 1) {%>
+                                <h4 class=" indigo-text text-darken-4 center" style="padding-top: 20px"> <b>Small Size Art</b></h4>
+                                <%    } else if (size == 2) {
+                                %><h4 class=" indigo-text text-darken-4 center" style="padding-top: 20px"> <b>Medium Size Art</b></h4>
+                                <%    } else if (size == 3) {
+                                %><h4 class=" indigo-text text-darken-4 center" style="padding-top: 20px"> <b>Large Size Art</b></h4>
+                                <%    } else if (size == 4) {%>
+                                <h4 class=" indigo-text text-darken-4 center" style="padding-top: 20px"> <b>Extra Large Size Art</b></h4>
+                                <% } else {%>
+                                <h4 class=" indigo-text text-darken-4 center" style="padding-top: 20px"> <b>Bad Request</b></h4>
+                                
+                                <% } }%>
+
+                                <div class="row" id="products" style="margin: 20px; min-height: 400px">
+                                </div>
+                            </div>
                         </div>
-                    </div>
-                </div>
-                <!--        footer starts here-->
-                <footer class="page-footer indigo darken-4">
-                    <div class="footer-copyright">
-                        <div class="container">
-                            © 2017 Copyright &emsp; &emsp; &emsp; &emsp; Made with <i class="fa fa-heart" aria-hidden="true"></i>	 while drinking <i class="fa fa-coffee" aria-hidden="true"></i>
-                            <a class="grey-text text-lighten-4 right" href="#!">More Links</a>
-                        </div>
-                    </div>
-                </footer>
-                <!--        footer ends here-->
-                <!--Scripts to be imported in sequence-->
-                <script type="text/javascript" src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
-                <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/js/materialize.min.js"></script>
-                <script src="https://cdnjs.cloudflare.com/ajax/libs/typed.js/1.1.1/typed.min.js"></script>
-                <script src="resources/js/main.js"></script>
-                <script>
-                    var val = document.getElementById("parameter");
-                    var type = document.getElementById("type");
-                    showProductAjax(type.value, val.value);
-                </script>
-                </body>
-                </html>
+                        <!--        footer starts here-->
+                        <footer class="page-footer indigo darken-4">
+                            <div class="footer-copyright">
+                                <div class="container">
+                                    © 2017 Copyright &emsp; &emsp; &emsp; &emsp; Made with <i class="fa fa-heart" aria-hidden="true"></i>	 while drinking <i class="fa fa-coffee" aria-hidden="true"></i>
+                                    <a class="grey-text text-lighten-4 right" href="#!">More Links</a>
+                                </div>
+                            </div>
+                        </footer>
+                        <!--        footer ends here-->
+                        <!--Scripts to be imported in sequence-->
+                        <script type="text/javascript" src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+                        <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/js/materialize.min.js"></script>
+                        <script src="https://cdnjs.cloudflare.com/ajax/libs/typed.js/1.1.1/typed.min.js"></script>
+                        <script src="resources/js/main.js"></script>
+                        <script>
+                            var val = document.getElementById("parameter");
+                            var type = document.getElementById("type");
+                            showProductAjax(type.value, val.value);
+                        </script>
+                        </body>
+                        </html>

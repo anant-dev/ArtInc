@@ -172,7 +172,7 @@
         
         <!-- add Artist Profile Modal Starts here-->
         <div id="artist" class="modal"  style="weidth:600px; height: auto; padding: 20px 150px  0px 150px">
-            <h4 class="pink-text text-darken-2" style="font-size: 30px"><b>Add Painting :</b></h4>
+            <h4 class="pink-text text-darken-2" style="font-size: 30px"><b>Artist Data :</b></h4>
             <form enctype="multipart/form-data" action="signupArtist" method="post">
                 <div class="row">
                     <div class="input-field col s12">
@@ -212,7 +212,7 @@
                 <div class="col s3">
                     <div class="card" id="s">
                         <div class="card-image">
-                            <img src="resources/Images/artist2.jpg" style="height:200px">
+                            <img src="resources/Images/small.png" style="height:200px">
                         </div>
                         <div class="card-content">
                             <span class="card-title">Small Size Art</span>
@@ -223,7 +223,7 @@
                  <div class="col s3">
                     <div class="card" id="m">
                         <div class="card-image">
-                            <img src="resources/Images/artist2.jpg" style="height:200px">
+                            <img src="resources/Images/m.png" style="height:200px">
                         </div>
                         <div class="card-content">
                             <span class="card-title">Medium Size Art</span>
@@ -234,7 +234,7 @@
                  <div class="col s3">
                     <div class="card" id="l">
                         <div class="card-image">
-                            <img src="resources/Images/artist2.jpg" style="height:200px">
+                            <img src="resources/Images/l.png" style="height:200px">
                         </div>
                         <div class="card-content">
                             <span class="card-title">Large Size Art</span>
@@ -245,7 +245,7 @@
                  <div class="col s3">
                     <div class="card" id="xl">
                         <div class="card-image">
-                            <img src="resources/Images/artist2.jpg" style="height:200px">
+                            <img src="resources/Images/xl.png" style="height:200px">
                         </div>
                         <div class="card-content">
                             <span class="card-title">Xtra Large Size Art</span>

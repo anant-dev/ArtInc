@@ -176,7 +176,7 @@
         
         <!-- add Artist Profile Modal Starts here-->
         <div id="artist" class="modal"  style="weidth:600px; height: auto; padding: 20px 150px  0px 150px">
-            <h4 class="pink-text text-darken-2" style="font-size: 30px"><b>Add Painting :</b></h4>
+            <h4 class="pink-text text-darken-2" style="font-size: 30px"><b>Artist Data  :</b></h4>
             <form enctype="multipart/form-data" action="signupArtist" method="post">
                 <div class="row">
                     <div class="input-field col s12">
